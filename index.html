@@ -109,6 +109,8 @@
   .review-stars { color:var(--amber); font-size:0.78rem; letter-spacing:1px; }
   .review-meta { font-size:0.7rem; color:var(--ink-muted); margin-bottom:6px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
   .review-comment { font-size:0.8rem; color:var(--ink-soft); line-height:1.6; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  .review-comment.expanded { display:block; -webkit-line-clamp:unset; overflow:visible; }
+  .show-more-btn { font-size:0.75rem; color:var(--accent,#4f8ef7); background:none; border:none; padding:2px 0 0; cursor:pointer; }
   .stag { display:inline-flex; padding:2px 7px; border-radius:3px; font-size:0.62rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; }
   .stag.pos { background:var(--green-light); color:var(--green); }
   .stag.neg { background:var(--red-light); color:var(--red); }
@@ -227,6 +229,7 @@ const VENUE_NAMES = {
 
 let DATA=[],allVenueMap={},allAddresses=[],isLive=false,activeLoc='all',activeSent='all',sChart=null,tChart=null;
 const escH=s=>{const d=document.createElement('div');d.textContent=s;return d.innerHTML};
+function toggleComment(el,btn){if(!el)return;el.classList.toggle('expanded');if(!btn)btn=el.nextElementSibling;if(btn&&btn.classList.contains('show-more-btn'))btn.textContent=el.classList.contains('expanded')?'Show less':'Show more';}
 const displayName=r=>{if(r.place_id&&VENUE_NAMES[r.place_id])return VENUE_NAMES[r.place_id];return r.address.split(',')[0]};
 const buildVM=d=>{const m={};d.forEach(r=>{if(!m[r.address])m[r.address]={venue:r.venue,address:r.address,place_id:r.place_id,venue_rating:r.venue_rating,venue_reviews:r.venue_reviews,reviews:[]};m[r.address].reviews.push(r)});return m};
 const normD=r=>{if(!r)return'';r=r.trim();if(/^\d{4}-\d{2}-\d{2}/.test(r))return r.slice(0,10);const p=r.split('/');if(p.length===3)return p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0');return r};
@@ -331,7 +334,7 @@ function renderFeed(){
   const visible=sorted.slice(0,showCount);
   const remaining=sorted.length-showCount;
   feedEl.innerHTML=visible.map(r=>{const st='★'.repeat(r.rating)+'☆'.repeat(5-r.rating),cl=r.sentiment==='Positive'?'pos':r.sentiment==='Negative'?'neg':'neu',fl=isFlag(r);
-  return '<div class="review-item'+(fl?' flagged':'')+'"><div class="review-header"><span class="review-author">'+escH(r.reviewer)+'</span><span class="review-stars">'+st+'</span></div><div class="review-meta"><span>'+escH(locName(r.address))+'</span><span>'+r.review_date+'</span><span class="stag '+cl+'">'+r.sentiment+'</span>'+(fl?'<span class="flag-tag">⚠ Attention</span>':'')+'</div>'+(r.comment?'<div class="review-comment">'+escH(r.comment)+'</div>':'')+'</div>'}).join('')
+  return '<div class="review-item'+(fl?' flagged':'')+'"><div class="review-header"><span class="review-author">'+escH(r.reviewer)+'</span><span class="review-stars">'+st+'</span></div><div class="review-meta"><span>'+escH(locName(r.address))+'</span><span>'+r.review_date+'</span><span class="stag '+cl+'">'+r.sentiment+'</span>'+(fl?'<span class="flag-tag">⚠ Attention</span>':'')+'</div>'+(r.comment?'<div class="review-comment" onclick="toggleComment(this)">'+escH(r.comment)+'</div>'+(r.comment.length>120?'<button class="show-more-btn" onclick="toggleComment(this.previousElementSibling,this)">Show more</button>':''):'')+'</div>'}).join('')
   +(remaining>0?'<button class="show-more-btn" id="show-more-btn">Show More ('+remaining+' remaining)</button>':'');
   const smBtn=document.getElementById('show-more-btn');
   if(smBtn)smBtn.addEventListener('click',()=>{showCount+=10;renderFeed()});
