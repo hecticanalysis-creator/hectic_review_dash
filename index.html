@@ -39,6 +39,17 @@
   .loc-btn.active { background:var(--red); color:#fff; border-color:var(--red); }
   .loc-btn .rc { font-size:0.62rem; opacity:0.6; margin-left:4px; }
 
+  /* DATE FILTER BAR */
+  .date-bar { display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap; align-items:center; }
+  .date-bar-label { font-family:'Space Mono',monospace; font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--ink-muted); margin-right:8px; }
+  .date-btn { font-family:'Space Mono',monospace; font-size:0.68rem; font-weight:700; padding:5px 14px; border:1px solid var(--border); border-radius:4px; background:transparent; color:var(--ink-muted); cursor:pointer; transition:all 0.15s; letter-spacing:0.06em; }
+  .date-btn:hover { border-color:var(--ink-muted); color:var(--ink-soft); }
+  .date-btn.active { background:var(--amber); color:#000; border-color:var(--amber); }
+  .date-sep { font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--ink-muted); padding:0 4px; align-self:center; }
+  .date-input { font-family:'Space Mono',monospace; font-size:0.68rem; font-weight:700; padding:5px 10px; border:1px solid var(--border); border-radius:4px; background:var(--surface-2); color:var(--ink-soft); cursor:pointer; letter-spacing:0.04em; color-scheme:dark; }
+  .date-input:focus { outline:none; border-color:var(--amber); color:var(--ink); }
+  .date-input.active { border-color:var(--amber); color:var(--amber); }
+
   /* KPI ROW */
   .kpi-row { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:28px; }
   .kpi { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px 20px; }
@@ -159,6 +170,18 @@
 
   <div class="location-bar" id="location-bar"><span class="location-bar-label">Location</span></div>
 
+  <div class="date-bar" id="date-bar">
+    <span class="date-bar-label">Period</span>
+    <button class="date-btn active" data-days="0">All time</button>
+    <button class="date-btn" data-days="7">7 days</button>
+    <button class="date-btn" data-days="30">30 days</button>
+    <button class="date-btn" data-days="90">90 days</button>
+    <span class="date-sep">—</span>
+    <input type="date" id="date-from" class="date-input" title="From date">
+    <span class="date-sep">to</span>
+    <input type="date" id="date-to" class="date-input" title="To date">
+  </div>
+
   <div class="kpi-row">
     <div class="kpi"><div class="kpi-label">Avg Rating</div><div class="kpi-value" id="kpi-avg">—</div><div class="kpi-sub" id="kpi-avg-sub"></div></div>
     <div class="kpi"><div class="kpi-label">This Week</div><div class="kpi-value" id="kpi-week">—</div><div class="kpi-sub" id="kpi-week-sub"></div></div>
@@ -222,16 +245,18 @@ const VENUE_NAMES = {
   "ChIJqdHsOp9D1moRtBJ17g-tCVY": "Kiosk",
 };
 
-let DATA=[],allVenueMap={},allAddresses=[],activeLoc='all',activeSent='all',sChart=null,tChart=null;
+let DATA=[],allVenueMap={},allAddresses=[],activeLoc='all',activeSent='all',activeDateDays=0,customFrom='',customTo='',sChart=null,tChart=null;
 const escH=s=>{const d=document.createElement('div');d.textContent=s;return d.innerHTML};
 function toggleComment(el,btn){if(!el)return;el.classList.toggle('expanded');if(!btn)btn=el.nextElementSibling;if(btn&&btn.classList.contains('show-more-btn'))btn.textContent=el.classList.contains('expanded')?'Show less':'Show more';}
 const displayName=r=>{if(r.place_id&&VENUE_NAMES[r.place_id])return VENUE_NAMES[r.place_id];return r.address.split(',')[0]};
 const buildVM=d=>{const m={};d.forEach(r=>{if(!m[r.address])m[r.address]={venue:r.venue,address:r.address,place_id:r.place_id,venue_rating:r.venue_rating,venue_reviews:r.venue_reviews,reviews:[]};m[r.address].reviews.push(r)});return m};
 const normD=r=>{if(!r)return'';r=r.trim();if(/^\d{4}-\d{2}-\d{2}/.test(r))return r.slice(0,10);const p=r.split('/');if(p.length===3)return p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0');return r};
 const normS=s=>{if(!s)return'Neutral';const c=s.trim().charAt(0).toUpperCase()+s.trim().slice(1).toLowerCase();return['Positive','Negative','Neutral'].includes(c)?c:'Neutral'};
-const parseC=t=>Papa.parse(t,{header:true,skipEmptyLines:true}).data.map(r=>({place_id:(r.place_id||'').trim(),venue:(r.venue||'').trim(),address:(r.address||'').trim(),venue_rating:parseFloat(r.venue_rating)||0,venue_reviews:parseInt(r.venue_reviews)||0,reviewer:(r.reviewer||'').trim(),rating:parseInt(r.rating)||0,comment:(r.comment||'').trim(),review_date:normD(r.review_date),sentiment:normS(r.sentiment),sentiment_score:parseFloat(r.sentiment_score)||0})).filter(r=>r.address&&r.rating>0&&r.rating<=5);
+const parseC=t=>Papa.parse(t,{header:true,skipEmptyLines:true}).data.map(r=>({place_id:(r.place_id||'').trim(),venue:(r.venue||'').trim(),address:(r.address||'').trim(),venue_rating:parseFloat(r.venue_rating)||0,venue_reviews:parseInt(r.venue_reviews)||0,reviewer:(r.reviewer||'').trim(),rating:parseInt(r.rating)||0,comment:(r.comment||'').trim(),review_date:normD(r.review_date),scraped_at:normD(r.scraped_at),sentiment:normS(r.sentiment),sentiment_score:parseFloat(r.sentiment_score)||0})).filter(r=>r.address&&r.rating>0&&r.rating<=5);
 const locName=addr=>{const v=allVenueMap[addr];if(v&&v.place_id&&VENUE_NAMES[v.place_id])return VENUE_NAMES[v.place_id];return addr.split(',')[0]};
-const filt=()=>activeLoc==='all'?DATA:DATA.filter(r=>r.address===activeLoc);
+const dateFrom=()=>customFrom||(!activeDateDays?'':(()=>{const d=new Date();d.setDate(d.getDate()-activeDateDays);return d.toISOString().slice(0,10)})());
+const dateTo=()=>customTo;
+const filt=()=>{let d=activeLoc==='all'?DATA:DATA.filter(r=>r.address===activeLoc);const df=dateFrom(),dt=dateTo();if(df)d=d.filter(r=>r.review_date>=df);if(dt)d=d.filter(r=>r.review_date<=dt);return d};
 const isFlag=r=>r.rating<=2;
 const getWS=d=>{const dt=new Date(d+'T00:00:00');const dy=dt.getDay();dt.setDate(dt.getDate()-dy+(dy===0?-6:1));return dt.toISOString().slice(0,10)};
 const weeksAgo=n=>{const d=new Date();d.setDate(d.getDate()-n*7);const dy=d.getDay();d.setDate(d.getDate()-dy+(dy===0?-6:1));return d.toISOString().slice(0,10)};
@@ -255,7 +280,18 @@ async function loadData(){
 function boot(){allVenueMap=buildVM(DATA);allAddresses=Object.keys(allVenueMap).sort((a,b)=>allVenueMap[b].reviews.length-allVenueMap[a].reviews.length);renderAll()}
 
 const locBar=document.getElementById('location-bar');
-function renderLB(){locBar.innerHTML='<span class="location-bar-label">Location</span>';const mk=(l,k,c)=>{const b=document.createElement('button');b.className='loc-btn'+(activeLoc===k?' active':'');b.dataset.loc=k;b.innerHTML=escH(l)+'<span class="rc">'+c+'</span>';locBar.appendChild(b)};mk('All','all',DATA.length);allAddresses.forEach(a=>mk(locName(a),a,allVenueMap[a].reviews.length))}
+function renderLB(){
+  const df=dateFrom(),dt=dateTo();
+  locBar.innerHTML='<span class="location-bar-label">Location</span>';
+  const mk=(l,k,c)=>{const b=document.createElement('button');b.className='loc-btn'+(activeLoc===k?' active':'');b.dataset.loc=k;b.innerHTML=escH(l)+'<span class="rc">'+c+'</span>';locBar.appendChild(b)};
+  let allFiltered=DATA;if(df)allFiltered=allFiltered.filter(r=>r.review_date>=df);if(dt)allFiltered=allFiltered.filter(r=>r.review_date<=dt);
+  mk('All','all',allFiltered.length);
+  allAddresses.forEach(a=>{let revs=allVenueMap[a].reviews;if(df)revs=revs.filter(r=>r.review_date>=df);if(dt)revs=revs.filter(r=>r.review_date<=dt);if(revs.length>0)mk(locName(a),a,revs.length)});
+}
+document.getElementById('date-bar').addEventListener('click',e=>{const b=e.target.closest('.date-btn');if(!b)return;document.querySelectorAll('.date-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');activeDateDays=parseInt(b.dataset.days)||0;customFrom='';customTo='';document.getElementById('date-from').value='';document.getElementById('date-to').value='';document.getElementById('date-from').classList.remove('active');document.getElementById('date-to').classList.remove('active');showCount=10;renderAll()});
+function onCustomDate(){customFrom=document.getElementById('date-from').value;customTo=document.getElementById('date-to').value;if(customFrom||customTo){document.querySelectorAll('.date-btn').forEach(x=>x.classList.remove('active'));activeDateDays=0;document.getElementById('date-from').classList.toggle('active',!!customFrom);document.getElementById('date-to').classList.toggle('active',!!customTo);}showCount=10;renderAll();}
+document.getElementById('date-from').addEventListener('change',onCustomDate);
+document.getElementById('date-to').addEventListener('change',onCustomDate);
 locBar.addEventListener('click',e=>{const b=e.target.closest('.loc-btn');if(!b)return;activeLoc=b.dataset.loc;showCount=10;renderAll()});
 document.getElementById('venue-tbody').addEventListener('click',e=>{const tr=e.target.closest('tr');if(!tr||!tr.dataset.addr)return;activeLoc=activeLoc===tr.dataset.addr?'all':tr.dataset.addr;showCount=10;renderAll()});
 
@@ -264,7 +300,7 @@ Chart.defaults.color=chartColors.text;Chart.defaults.borderColor=chartColors.gri
 
 function renderAll(){
   const data=filt(),n=data.length;renderLB();
-  document.getElementById('total-reviews').textContent=DATA.length;
+  document.getElementById('total-reviews').textContent=n;
   document.getElementById('last-updated').textContent=DATA.map(r=>r.review_date).sort().pop();
   document.getElementById('venue-count').textContent=allAddresses.length;
   const avg=n?(data.reduce((s,r)=>s+r.rating,0)/n).toFixed(1):'—';
@@ -315,7 +351,8 @@ function renderKW(data){
 
 function renderLead(){
   const tb=document.getElementById('venue-tbody');tb.innerHTML='';
-  const rows=allAddresses.map(addr=>{const v=allVenueMap[addr],revs=v.reviews,avg=(revs.reduce((s,r)=>s+r.rating,0)/revs.length).toFixed(1),pos=revs.filter(r=>r.sentiment==='Positive').length,neg=revs.filter(r=>r.sentiment==='Negative').length,neu=revs.filter(r=>r.sentiment==='Neutral').length,ss=revs.length?((pos-neg)/revs.length):0;return{addr,v,avg:parseFloat(avg),pos,neg,neu,ss,total:revs.length}});
+  const df=dateFrom(),dt=dateTo();
+  const rows=allAddresses.map(addr=>{const v=allVenueMap[addr];let revs=v.reviews;if(df)revs=revs.filter(r=>r.review_date>=df);if(dt)revs=revs.filter(r=>r.review_date<=dt);if(!revs.length)return null;const avg=(revs.reduce((s,r)=>s+r.rating,0)/revs.length).toFixed(1),pos=revs.filter(r=>r.sentiment==='Positive').length,neg=revs.filter(r=>r.sentiment==='Negative').length,neu=revs.filter(r=>r.sentiment==='Neutral').length,ss=revs.length?((pos-neg)/revs.length):0;return{addr,v,avg:parseFloat(avg),pos,neg,neu,ss,total:revs.length}}).filter(Boolean);
   rows.sort((a,b)=>b.ss-a.ss);const mxS=Math.max(...rows.map(r=>Math.abs(r.ss)),0.01);
   rows.forEach(r=>{const pct=Math.abs(r.ss)/mxS*100,col=r.ss>=0?'var(--green)':'var(--red)',disp=(r.ss>=0?'+':'')+r.ss.toFixed(2),ia=activeLoc===r.addr;
   tb.innerHTML+=`<tr data-addr="${escH(r.addr)}" class="${ia?'active-row':''}"><td><div class="venue-name">${escH(locName(r.addr))}</div><div class="venue-address">${escH(r.addr)}</div></td><td><span class="rating-badge"><span class="star">★</span>${r.v.venue_rating}</span></td><td><div class="rank-bar-wrap"><span class="rank-score" style="color:${col}">${disp}</span><div class="rank-bar" style="width:${pct}%;background:${col};opacity:0.3"></div></div></td><td>${r.total}</td><td><span class="sentiment-dot pos"></span>${r.pos} <span class="sentiment-dot neu"></span>${r.neu} <span class="sentiment-dot neg"></span>${r.neg}</td></tr>`});
