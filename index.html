@@ -188,7 +188,7 @@
   <div class="location-bar" id="location-bar"><span class="location-bar-label">Location</span></div>
 
   <div class="kpi-row">
-    <div class="kpi"><div class="kpi-label">Avg Rating</div><div class="kpi-value" id="kpi-avg">—</div><div class="kpi-sub" id="kpi-avg-sub"></div></div>
+    <div class="kpi"><div class="kpi-label">Google Rating</div><div class="kpi-value" id="kpi-avg">—</div><div class="kpi-sub" id="kpi-avg-sub"></div></div>
     <div class="kpi"><div class="kpi-label">This Week</div><div class="kpi-value" id="kpi-week">—</div><div class="kpi-sub" id="kpi-week-sub"></div></div>
     <div class="kpi"><div class="kpi-label">Positive</div><div class="kpi-value v-green" id="kpi-pos">—</div><div class="kpi-sub" id="kpi-pos-sub"></div></div>
     <div class="kpi"><div class="kpi-label">Negative</div><div class="kpi-value v-red" id="kpi-neg">—</div><div class="kpi-sub" id="kpi-neg-sub"></div></div>
@@ -292,18 +292,56 @@ function renderAll(){
   document.getElementById('total-reviews').textContent=DATA.length;
   document.getElementById('last-updated').textContent=DATA.map(r=>r.review_date).sort().pop();
   document.getElementById('venue-count').textContent=allAddresses.length;
-  const avg=n?(data.reduce((s,r)=>s+r.rating,0)/n).toFixed(1):'—';
+
+  // Google Rating — average of venue_rating across the filtered locations.
+  // venue_rating is the live Google star rating scraped from Places API,
+  // which is what teams see on Google Maps. This is the authoritative number.
+  const venueRatings=[];
+  if(activeLoc==='all'){
+    // One rating per unique venue (not per review — avoids weighting by review volume)
+    Object.values(allVenueMap).forEach(v=>{if(v.venue_rating)venueRatings.push(v.venue_rating)});
+  } else {
+    const v=allVenueMap[activeLoc];
+    if(v&&v.venue_rating)venueRatings.push(v.venue_rating);
+  }
+  const googleAvg=venueRatings.length
+    ? (venueRatings.reduce((s,r)=>s+r,0)/venueRatings.length).toFixed(1)
+    : '—';
+
+  // Scraped review avg — calculated from individual review ratings in the CSV.
+  // Shown as context below the Google Rating, not the headline number.
+  // Lower than Google avg because recent reviews skew negative and we only
+  // capture ~5 per venue per scrape run.
+  const scrapedAvg=n?(data.reduce((s,r)=>s+r.rating,0)/n).toFixed(1):'—';
+
   const sc={Positive:0,Neutral:0,Negative:0};data.forEach(r=>sc[r.sentiment]++);
   const rc=[0,0,0,0,0];data.forEach(r=>rc[r.rating-1]++);
   const flagged=data.filter(isFlag).length;
   const tw=weeksAgo(0),lw=weeksAgo(1);
-  const twr=data.filter(r=>r.review_date>=tw).length,lwr=data.filter(r=>r.review_date>=lw&&r.review_date<tw).length;
+  const twData=data.filter(r=>r.review_date>=tw);
+  const twr=twData.length;
+  const lwr=data.filter(r=>r.review_date>=lw&&r.review_date<tw).length;
   const wd=twr-lwr;
 
-  document.getElementById('kpi-avg').textContent=avg;
-  document.getElementById('kpi-avg-sub').textContent=n+' reviews';
+  // Week avg rating — from scraped reviews this week only
+  const twAvg=twr?(twData.reduce((s,r)=>s+r.rating,0)/twr).toFixed(1):null;
+
+  // Google Rating KPI — the number teams recognise
+  const avgEl=document.getElementById('kpi-avg');
+  avgEl.textContent=googleAvg;
+  // Colour: green ≥4.5, amber 4.0–4.4, red <4.0
+  const gNum=parseFloat(googleAvg);
+  avgEl.className='kpi-value'+(gNum>=4.5?' v-green':gNum>=4.0?' v-amber':' v-red');
+  document.getElementById('kpi-avg-sub').innerHTML=
+    `${venueRatings.length} location${venueRatings.length!==1?'s':''}`+
+    (scrapedAvg!=='—'?` &nbsp;·&nbsp; <span style="color:var(--ink-muted)">${scrapedAvg}★ recent</span>`:'');
+
+  // This Week KPI — count headline, week avg rating as sub-label
   document.getElementById('kpi-week').textContent=twr;
-  document.getElementById('kpi-week-sub').innerHTML='this week'+(wd!==0?' <span class="kpi-delta '+(wd>0?'up':'down')+'">'+(wd>0?'▲+':'▼')+Math.abs(wd)+'</span>':'');
+  document.getElementById('kpi-week-sub').innerHTML=
+    (twAvg?`<span style="color:var(--amber);font-weight:700">${twAvg}★</span> avg &nbsp;`:'')
+    +(wd!==0?'<span class="kpi-delta '+(wd>0?'up':'down')+'">'+(wd>0?'▲+':'▼')+Math.abs(wd)+'</span>':'this week');
+
   const pp=n?((sc.Positive/n)*100).toFixed(0):'0';
   document.getElementById('kpi-pos').textContent=pp+'%';
   document.getElementById('kpi-pos-sub').textContent=sc.Positive+'/'+n;
