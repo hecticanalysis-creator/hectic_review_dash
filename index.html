@@ -120,6 +120,18 @@
   .stag.neg { background:var(--red-light); color:var(--red); }
   .stag.neu { background:rgba(255,255,255,0.06); color:var(--ink-muted); }
   .flag-tag { display:inline-flex; align-items:center; gap:3px; padding:2px 7px; border-radius:3px; font-size:0.6rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; background:var(--red); color:#fff; }
+  .mtag { display:inline-flex; align-items:center; gap:2px; font-size:0.6rem; font-weight:700; padding:2px 6px; border-radius:3px; text-transform:uppercase; letter-spacing:0.04em; }
+  .mtag.wait    { background:rgba(255,220,0,0.15);    color:var(--amber); }
+  .mtag.price   { background:rgba(168,85,247,0.15);   color:#A855F7; }
+  .mtag.service { background:rgba(74,158,255,0.15);   color:#4A9EFF; }
+
+  /* MENTION BARS (theme card) */
+  .mention-row { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .mention-label { font-size:0.72rem; color:var(--ink-soft); width:80px; flex-shrink:0; }
+  .mention-bar-wrap { flex:1; display:flex; flex-direction:column; gap:3px; }
+  .mention-track { height:10px; background:var(--surface-2); border-radius:3px; overflow:hidden; }
+  .mention-fill { height:100%; border-radius:3px; transition:width 0.6s cubic-bezier(0.22,1,0.36,1); }
+  .mention-pct { font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--ink-muted); width:32px; text-align:right; }
 
   .chart-wrap { position:relative; width:100%; }
   .chart-wrap canvas { width:100%!important; }
@@ -138,8 +150,12 @@
   .show-more-btn { display:block; width:100%; font-family:'Inter',sans-serif; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; padding:12px; border:1px solid var(--border); border-radius:4px; background:transparent; color:var(--ink-muted); cursor:pointer; transition:all 0.15s; margin-top:8px; }
   .show-more-btn:hover { border-color:var(--red); color:var(--red); }
 
+  @media(max-width:1100px){
+    .grid-3[style*="1fr 1fr 1fr 1fr"]{grid-template-columns:1fr 1fr!important}
+  }
   @media(max-width:900px){
     .kpi-row{grid-template-columns:repeat(2,1fr)} .grid-2,.grid-3{grid-template-columns:1fr}
+    .grid-3[style]{grid-template-columns:1fr!important}
     header{flex-direction:column;align-items:flex-start;gap:10px} .header-meta{text-align:left}
     .brand h1{font-size:1.3rem} .nav-links{justify-content:flex-start}
   }
@@ -163,7 +179,7 @@
       updated <strong id="last-updated">—</strong>
       <div class="data-badge snapshot" id="source-badge"><span class="dot"></span><span id="source-label">snapshot</span></div>
       <div class="nav-links">
-        <a href="./" class="nav-link active">Review Dash</a>
+        <a href="./index.html" class="nav-link active">Review Dash</a>
         <a href="./competitor_dash.html" class="nav-link">Market Intel →</a>
       </div>
     </div>
@@ -184,10 +200,11 @@
     <div class="card"><div class="card-title">Sentiment</div><div class="chart-wrap"><canvas id="sentimentChart" height="180"></canvas></div></div>
   </div>
 
-  <div class="grid-3">
+  <div class="grid-3" style="grid-template-columns:1fr 1fr 1fr 1fr">
     <div class="card"><div class="card-title">Ratings</div><div class="rating-bars" id="rating-bars"></div></div>
     <div class="card"><div class="card-title">Top Keywords — Positive</div><div class="keyword-cloud" id="kw-pos"></div></div>
     <div class="card"><div class="card-title">Top Keywords — Negative</div><div class="keyword-cloud" id="kw-neg"></div></div>
+    <div class="card"><div class="card-title">Review Themes</div><div id="theme-mentions"></div></div>
   </div>
 
   <div class="card" style="margin-bottom:28px">
@@ -206,6 +223,8 @@
         <button class="filter-btn" data-filter="Positive">Positive</button>
         <button class="filter-btn" data-filter="Neutral">Neutral</button>
         <button class="filter-btn" data-filter="Negative">Negative</button>
+        <button class="filter-btn" data-filter="wait">⏱ Wait</button>
+        <button class="filter-btn" data-filter="price">$ Price</button>
       </div>
       <select class="sort-select" id="sort-select">
         <option value="newest">Newest First</option>
@@ -249,6 +268,12 @@ const isFlag=r=>r.rating<=2;
 const getWS=d=>{const dt=new Date(d+'T00:00:00');const dy=dt.getDay();dt.setDate(dt.getDate()-dy+(dy===0?-6:1));return dt.toISOString().slice(0,10)};
 const weeksAgo=n=>{const d=new Date();d.setDate(d.getDate()-n*7);const dy=d.getDay();d.setDate(d.getDate()-dy+(dy===0?-6:1));return d.toISOString().slice(0,10)};
 const STOP=new Set('the a an and or but in on at to for of with by from is it was are were be been being have has had do does did will would could should may might shall can this that these those i me my we our you your he she they them their its not no so if then than too very just about up out all also as into over after before between through during some each which what when where how who more most other only same here there her his him us am get got went come came back said really one two much even well like don\'t didn\'t won\'t it\'s i\'m i\'ve we\'re they\'re that\'s there\'s here\'s'.split(' '));
+
+// ── MENTION DETECTION ──
+const WAIT_KW    = ['waited','waiting','wait','queue','line','minutes','mins','slow','quick','fast','prompt','long wait','no wait'];
+const PRICE_KW   = ['expensive','cheap','pricey','overpriced','value','worth','affordable','reasonable','steep','price','cost','$'];
+const SERVICE_KW = ['friendly','rude','slow','fast','quick','prompt','service','staff','welcoming','helpful','attentive','ignored','efficient'];
+const hasMention = (text, kws) => { const t = (text||'').toLowerCase(); return kws.some(k => t.includes(k)); };
 function extractKW(revs,sf){const c={};revs.filter(r=>r.comment&&(!sf||r.sentiment===sf)).forEach(r=>{const ws=r.comment.toLowerCase().replace(/[^a-z\s'-]/g,' ').split(/\s+/);const seen=new Set();ws.forEach(w=>{w=w.replace(/^['-]+|['-]+$/g,'');if(w.length<3||STOP.has(w)||seen.has(w))return;seen.add(w);c[w]=(c[w]||0)+1})});return Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,10)}
 
 async function loadData(){if(CSV_URL){try{const r=await fetch(CSV_URL);if(r.ok){const t=await r.text();const rows=parseC(t);if(rows.length>0){DATA=rows;isLive=true;boot();return}}}catch(e){console.warn('CSV fail:',e)}}DATA=SNAPSHOT;isLive=false;boot()}
@@ -295,7 +320,32 @@ function renderAll(){
   if(sChart){sChart.data.datasets[0].data=[sc.Positive,sc.Neutral,sc.Negative];sChart.update()}
   else{sChart=new Chart(document.getElementById('sentimentChart'),{type:'doughnut',data:{labels:['Positive','Neutral','Negative'],datasets:[{data:[sc.Positive,sc.Neutral,sc.Negative],backgroundColor:['#2ECC40','#666','#D70F00'],borderWidth:0,hoverOffset:4}]},options:{cutout:'65%',responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:14,usePointStyle:true,pointStyleWidth:8,font:{size:11}}}}}})}
 
-  renderTrend(data);renderKW(data);renderLead();renderFeed();
+  renderTrend(data);renderKW(data);renderThemes(data);renderLead();renderFeed();
+}
+
+function renderThemes(data) {
+  const el = document.getElementById('theme-mentions');
+  const n  = data.length || 1;
+  const rows = [
+    { label:'Wait / Queue', kws:WAIT_KW,    col:'var(--amber)', pct:0 },
+    { label:'Price / Value', kws:PRICE_KW,   col:'#A855F7',      pct:0 },
+    { label:'Service',       kws:SERVICE_KW, col:'#4A9EFF',      pct:0 },
+  ];
+  rows.forEach(row => { row.pct = Math.round(data.filter(r => hasMention(r.comment, row.kws)).length / n * 100); });
+
+  el.innerHTML = rows.map(row => `
+    <div class="mention-row">
+      <span class="mention-label">${row.label}</span>
+      <div class="mention-bar-wrap">
+        <div class="mention-track"><div class="mention-fill" style="width:${row.pct}%;background:${row.col};opacity:0.75"></div></div>
+      </div>
+      <span class="mention-pct">${row.pct}%</span>
+    </div>
+  `).join('') + `<div style="font-size:0.68rem;color:var(--ink-muted);margin-top:10px;line-height:1.6">
+    ${data.filter(r=>hasMention(r.comment,WAIT_KW)).length} wait &nbsp;·&nbsp;
+    ${data.filter(r=>hasMention(r.comment,PRICE_KW)).length} price &nbsp;·&nbsp;
+    ${data.filter(r=>hasMention(r.comment,SERVICE_KW)).length} service mentions
+  </div>`;
 }
 
 function renderTrend(data){
@@ -336,13 +386,24 @@ function sortReviews(arr){
 }
 
 function renderFeed(){
-  let d=filt();if(activeSent==='flagged')d=d.filter(isFlag);else if(activeSent!=='all')d=d.filter(r=>r.sentiment===activeSent);
+  let d=filt();
+  if(activeSent==='flagged')        d=d.filter(isFlag);
+  else if(activeSent==='wait')      d=d.filter(r=>hasMention(r.comment,WAIT_KW));
+  else if(activeSent==='price')     d=d.filter(r=>hasMention(r.comment,PRICE_KW));
+  else if(activeSent!=='all')       d=d.filter(r=>r.sentiment===activeSent);
   const sorted=sortReviews([...d]);
   if(!sorted.length){feedEl.innerHTML='<div class="empty-msg">No reviews match.</div>';return}
   const visible=sorted.slice(0,showCount);
   const remaining=sorted.length-showCount;
-  feedEl.innerHTML=visible.map(r=>{const st='★'.repeat(r.rating)+'☆'.repeat(5-r.rating),cl=r.sentiment==='Positive'?'pos':r.sentiment==='Negative'?'neg':'neu',fl=isFlag(r);
-  return '<div class="review-item'+(fl?' flagged':'')+'"><div class="review-header"><span class="review-author">'+escH(r.reviewer)+'</span><span class="review-stars">'+st+'</span></div><div class="review-meta"><span>'+escH(locName(r.address))+'</span><span>'+r.review_date+'</span><span class="stag '+cl+'">'+r.sentiment+'</span>'+(fl?'<span class="flag-tag">⚠ Attention</span>':'')+'</div>'+(r.comment?'<div class="review-comment" onclick="toggleComment(this)">'+escH(r.comment)+'</div>'+(r.comment.length>120?'<button class="show-more-btn" onclick="toggleComment(this.previousElementSibling,this)">Show more</button>':''):'')+'</div>'}).join('')
+  feedEl.innerHTML=visible.map(r=>{
+    const st='★'.repeat(r.rating)+'☆'.repeat(5-r.rating),cl=r.sentiment==='Positive'?'pos':r.sentiment==='Negative'?'neg':'neu',fl=isFlag(r);
+    const mtags=[
+      hasMention(r.comment,WAIT_KW)    ? '<span class="mtag wait">⏱ wait</span>'    : '',
+      hasMention(r.comment,PRICE_KW)   ? '<span class="mtag price">$ price</span>'  : '',
+      hasMention(r.comment,SERVICE_KW) ? '<span class="mtag service">★ service</span>' : '',
+    ].filter(Boolean).join('');
+    return '<div class="review-item'+(fl?' flagged':'')+'"><div class="review-header"><span class="review-author">'+escH(r.reviewer)+'</span><span class="review-stars">'+st+'</span></div><div class="review-meta"><span>'+escH(locName(r.address))+'</span><span>'+r.review_date+'</span><span class="stag '+cl+'">'+r.sentiment+'</span>'+(fl?'<span class="flag-tag">⚠ Attention</span>':'')+mtags+'</div>'+(r.comment?'<div class="review-comment" onclick="toggleComment(this)">'+escH(r.comment)+'</div>'+(r.comment.length>120?'<button class="show-more-btn" onclick="toggleComment(this.previousElementSibling,this)">Show more</button>':''):'')+'</div>';
+  }).join('')
   +(remaining>0?'<button class="show-more-btn" id="show-more-btn">Show More ('+remaining+' remaining)</button>':'');
   const smBtn=document.getElementById('show-more-btn');
   if(smBtn)smBtn.addEventListener('click',()=>{showCount+=10;renderFeed()});
