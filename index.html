@@ -9,158 +9,171 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0A0A0A; --surface: #141414; --surface-2: #1C1C1C;
-    --ink: #F5F5F5; --ink-soft: #A0A0A0; --ink-muted: #666;
-    --red: #D70F00; --red-dark: #9B0A00; --red-light: rgba(215,15,0,0.12);
-    --green: #2ECC40; --green-light: rgba(46,204,64,0.12);
-    --amber: #FFDC00; --amber-light: rgba(255,220,0,0.12);
-    --border: #2A2A2A; --radius: 8px;
-    --shadow: 0 2px 12px rgba(0,0,0,0.4);
+    --bg:#0A0A0A; --surface:#141414; --surface-2:#1C1C1C;
+    --ink:#F5F5F5; --ink-soft:#A0A0A0; --ink-muted:#666;
+    --red:#D70F00; --red-dark:#9B0A00; --red-light:rgba(215,15,0,0.12);
+    --green:#2ECC40; --green-light:rgba(46,204,64,0.12);
+    --amber:#FFDC00; --amber-light:rgba(255,220,0,0.12);
+    --border:#2A2A2A; --radius:8px;
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; -webkit-font-smoothing:antialiased; }
-  .container { max-width:1240px; margin:0 auto; padding:32px 24px 80px; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .container{max-width:1240px;margin:0 auto;padding:32px 24px 80px}
 
   /* HEADER */
-  header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:36px; padding-bottom:20px; border-bottom:2px solid var(--red); }
-  .brand { display:flex; align-items:baseline; gap:12px; }
-  .brand h1 { font-family:'Space Mono',monospace; font-weight:700; font-size:1.6rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink); }
-  .brand .divider { width:2px; height:20px; background:var(--red); align-self:center; }
-  .brand .subtitle { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.15em; color:var(--red); }
-  .header-meta { text-align:right; font-size:0.75rem; color:var(--ink-muted); line-height:1.7; font-family:'Space Mono',monospace; }
-  .header-meta strong { color:var(--ink-soft); }
-  .data-badge { display:inline-flex; align-items:center; gap:5px; font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; padding:3px 8px; border-radius:4px; margin-top:6px; }
-  .data-badge.live { background:var(--green-light); color:var(--green); }
-  .data-badge.snapshot { background:var(--red-light); color:var(--red); }
-  .data-badge .dot { width:5px; height:5px; border-radius:50%; background:currentColor; }
-  .nav-links { display:flex; gap:8px; margin-top:8px; justify-content:flex-end; }
-  .nav-link { font-family:'Space Mono',monospace; font-size:0.62rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; padding:4px 10px; border-radius:4px; border:1px solid var(--border); color:var(--ink-muted); text-decoration:none; transition:all 0.15s; }
-  .nav-link:hover { border-color:var(--ink-soft); color:var(--ink-soft); }
-  .nav-link.active { background:var(--red); color:#fff; border-color:var(--red); }
+  header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px;padding-bottom:20px;border-bottom:2px solid var(--red)}
+  .brand{display:flex;align-items:baseline;gap:12px}
+  .brand h1{font-family:'Space Mono',monospace;font-weight:700;font-size:1.6rem;text-transform:uppercase;letter-spacing:0.08em}
+  .brand .divider{width:2px;height:20px;background:var(--red);align-self:center}
+  .brand .subtitle{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:var(--red)}
+  .header-meta{text-align:right;font-size:0.75rem;color:var(--ink-muted);line-height:1.7;font-family:'Space Mono',monospace}
+  .header-meta strong{color:var(--ink-soft)}
+  .data-badge{display:inline-flex;align-items:center;gap:5px;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:3px 8px;border-radius:4px;margin-top:6px}
+  .data-badge.live{background:var(--green-light);color:var(--green)}
+  .data-badge.snapshot{background:var(--red-light);color:var(--red)}
+  .data-badge .dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+  .nav-links{display:flex;gap:8px;margin-top:8px;justify-content:flex-end}
+  .nav-link{font-family:'Space Mono',monospace;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:4px 10px;border-radius:4px;border:1px solid var(--border);color:var(--ink-muted);text-decoration:none;transition:all 0.15s}
+  .nav-link:hover{border-color:var(--ink-soft);color:var(--ink-soft)}
+  .nav-link.active{background:var(--red);color:#fff;border-color:var(--red)}
 
   /* LOCATION BAR */
-  .location-bar { display:flex; gap:6px; margin-bottom:28px; flex-wrap:wrap; align-items:center; }
-  .location-bar-label { font-family:'Space Mono',monospace; font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--ink-muted); margin-right:8px; }
-  .loc-btn { font-family:'Inter',sans-serif; font-size:0.72rem; font-weight:600; padding:6px 14px; border:1px solid var(--border); border-radius:4px; background:transparent; color:var(--ink-muted); cursor:pointer; transition:all 0.15s; white-space:nowrap; text-transform:uppercase; letter-spacing:0.04em; }
-  .loc-btn:hover { border-color:var(--ink-muted); color:var(--ink-soft); }
-  .loc-btn.active { background:var(--red); color:#fff; border-color:var(--red); }
-  .loc-btn .rc { font-size:0.62rem; opacity:0.6; margin-left:4px; }
+  .location-bar{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+  .location-bar-label{font-family:'Space Mono',monospace;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-muted);margin-right:8px}
+  .loc-btn{font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;padding:6px 14px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--ink-muted);cursor:pointer;transition:all 0.15s;white-space:nowrap;text-transform:uppercase;letter-spacing:0.04em}
+  .loc-btn:hover{border-color:var(--ink-muted);color:var(--ink-soft)}
+  .loc-btn.active{background:var(--red);color:#fff;border-color:var(--red)}
+  .loc-btn .rc{font-size:0.62rem;opacity:0.6;margin-left:4px}
+
+  /* DATE BAR */
+  .date-bar{display:flex;gap:6px;margin-bottom:28px;flex-wrap:wrap;align-items:center}
+  .date-bar-label{font-family:'Space Mono',monospace;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-muted);margin-right:8px}
+  .date-btn{font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;padding:6px 14px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--ink-muted);cursor:pointer;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.04em}
+  .date-btn:hover{border-color:var(--ink-muted);color:var(--ink-soft)}
+  .date-btn.active{background:var(--amber);color:#000;border-color:var(--amber)}
+  .date-sep{font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--ink-muted);padding:0 4px;align-self:center}
+  .date-input{font-family:'Space Mono',monospace;font-size:0.68rem;font-weight:700;padding:5px 10px;border:1px solid var(--border);border-radius:4px;background:var(--surface-2);color:var(--ink-soft);cursor:pointer;letter-spacing:0.04em;color-scheme:dark}
+  .date-input:focus{outline:none;border-color:var(--amber);color:var(--ink)}
+  .date-input.active{border-color:var(--amber);color:var(--amber)}
 
   /* KPI ROW */
-  .kpi-row { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:28px; }
-  .kpi { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px 20px; }
-  .kpi-label { font-family:'Space Mono',monospace; font-size:0.6rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--ink-muted); margin-bottom:8px; }
-  .kpi-value { font-family:'Space Mono',monospace; font-weight:700; font-size:1.8rem; line-height:1; letter-spacing:-0.02em; }
-  .kpi-sub { font-size:0.72rem; color:var(--ink-muted); margin-top:6px; }
-  .kpi-delta { display:inline-flex; align-items:center; gap:2px; font-family:'Space Mono',monospace; font-size:0.62rem; font-weight:700; padding:2px 6px; border-radius:3px; margin-left:4px; }
-  .kpi-delta.up { background:var(--green-light); color:var(--green); }
-  .kpi-delta.down { background:var(--red-light); color:var(--red); }
-  .kpi-value.v-green { color:var(--green); }
-  .kpi-value.v-red { color:var(--red); }
-  .kpi-value.v-amber { color:var(--amber); }
+  .kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px}
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px}
+  .kpi-label{font-family:'Space Mono',monospace;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-muted);margin-bottom:8px}
+  .kpi-value{font-family:'Space Mono',monospace;font-weight:700;font-size:1.8rem;line-height:1;letter-spacing:-0.02em}
+  .kpi-sub{font-size:0.72rem;color:var(--ink-muted);margin-top:6px}
+  .kpi-delta{display:inline-flex;align-items:center;gap:2px;font-family:'Space Mono',monospace;font-size:0.62rem;font-weight:700;padding:2px 6px;border-radius:3px;margin-left:4px}
+  .kpi-delta.up{background:var(--green-light);color:var(--green)}
+  .kpi-delta.down{background:var(--red-light);color:var(--red)}
+  .v-green{color:var(--green)} .v-red{color:var(--red)} .v-amber{color:var(--amber)}
 
   /* GRIDS */
-  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:28px; }
-  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:28px; }
-  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px; }
-  .card-title { font-family:'Space Mono',monospace; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--ink-muted); margin-bottom:18px; padding-bottom:10px; border-bottom:1px solid var(--border); }
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:28px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+  .card-title{font-family:'Space Mono',monospace;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-muted);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border)}
 
   /* VENUE TABLE */
-  .venue-table { width:100%; border-collapse:collapse; font-size:0.8rem; }
-  .venue-table th { text-align:left; font-family:'Space Mono',monospace; font-weight:700; font-size:0.6rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--ink-muted); padding:0 10px 10px; border-bottom:1px solid var(--border); }
-  .venue-table td { padding:10px; border-bottom:1px solid var(--border); vertical-align:middle; }
-  .venue-table tr:last-child td { border-bottom:none; }
-  .venue-table tr { transition:background 0.1s; cursor:pointer; }
-  .venue-table tr:hover { background:var(--surface-2); }
-  .venue-table tr.active-row { background:var(--red-light); }
-  .venue-name { font-weight:700; color:var(--ink); }
-  .venue-address { font-size:0.7rem; color:var(--ink-muted); margin-top:1px; }
-  .rating-badge { display:inline-flex; align-items:center; gap:3px; font-weight:700; font-size:0.8rem; }
-  .star { color:var(--amber); }
-  .sentiment-dot { display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:4px; }
-  .sentiment-dot.pos { background:var(--green); }
-  .sentiment-dot.neg { background:var(--red); }
-  .sentiment-dot.neu { background:var(--ink-muted); }
-  .rank-bar-wrap { display:flex; align-items:center; gap:6px; }
-  .rank-bar { height:6px; border-radius:3px; transition:width 0.5s; }
-  .rank-score { font-family:'Space Mono',monospace; font-weight:700; font-size:0.75rem; min-width:36px; }
+  .venue-table{width:100%;border-collapse:collapse;font-size:0.8rem}
+  .venue-table th{text-align:left;font-family:'Space Mono',monospace;font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-muted);padding:0 10px 10px;border-bottom:1px solid var(--border)}
+  .venue-table td{padding:10px;border-bottom:1px solid var(--border);vertical-align:middle}
+  .venue-table tr:last-child td{border-bottom:none}
+  .venue-table tr{transition:background 0.1s;cursor:pointer}
+  .venue-table tr:hover{background:var(--surface-2)}
+  .venue-table tr.active-row{background:var(--red-light)}
+  .venue-name{font-weight:700;color:var(--ink)}
+  .venue-address{font-size:0.7rem;color:var(--ink-muted);margin-top:1px}
+  .rating-badge{display:inline-flex;align-items:center;gap:3px;font-weight:700;font-size:0.8rem}
+  .star{color:var(--amber)}
+  .sentiment-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}
+  .sentiment-dot.pos{background:var(--green)}
+  .sentiment-dot.neg{background:var(--red)}
+  .sentiment-dot.neu{background:var(--ink-muted)}
+  .rank-bar-wrap{display:flex;align-items:center;gap:6px}
+  .rank-bar{height:6px;border-radius:3px;transition:width 0.5s}
+  .rank-score{font-family:'Space Mono',monospace;font-weight:700;font-size:0.75rem;min-width:36px}
 
   /* RATING BARS */
-  .rating-bars { display:flex; flex-direction:column; gap:6px; }
-  .rating-bar-row { display:grid; grid-template-columns:28px 1fr 30px; align-items:center; gap:8px; font-size:0.78rem; }
-  .rating-bar-row .label { font-family:'Space Mono',monospace; font-weight:700; font-size:0.72rem; color:var(--ink-muted); display:flex; align-items:center; gap:1px; }
-  .bar-track { height:16px; background:var(--surface-2); border-radius:3px; overflow:hidden; }
-  .bar-fill { height:100%; border-radius:3px; transition:width 0.5s cubic-bezier(0.22,1,0.36,1); }
-  .bar-fill.r5{background:var(--green)} .bar-fill.r4{background:#5CB85C}
-  .bar-fill.r3{background:var(--amber)} .bar-fill.r2{background:#FF851B}
+  .rating-bars{display:flex;flex-direction:column;gap:6px}
+  .rating-bar-row{display:grid;grid-template-columns:28px 1fr 30px;align-items:center;gap:8px;font-size:0.78rem}
+  .rating-bar-row .label{font-family:'Space Mono',monospace;font-weight:700;font-size:0.72rem;color:var(--ink-muted);display:flex;align-items:center;gap:1px}
+  .bar-track{height:16px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:3px;transition:width 0.5s cubic-bezier(0.22,1,0.36,1)}
+  .bar-fill.r5{background:var(--green)}.bar-fill.r4{background:#5CB85C}
+  .bar-fill.r3{background:var(--amber)}.bar-fill.r2{background:#FF851B}
   .bar-fill.r1{background:var(--red)}
-  .rating-bar-row .count { font-family:'Space Mono',monospace; font-size:0.68rem; color:var(--ink-muted); text-align:right; }
+  .rating-bar-row .count{font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--ink-muted);text-align:right}
 
   /* KEYWORDS */
-  .keyword-cloud { display:flex; flex-wrap:wrap; gap:6px; }
-  .kw-pill { display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:3px; font-size:0.72rem; font-weight:600; }
-  .kw-pill .kw-c { font-family:'Space Mono',monospace; font-size:0.6rem; font-weight:700; opacity:0.7; }
-  .kw-pill.pos-kw { background:var(--green-light); color:var(--green); }
-  .kw-pill.neg-kw { background:var(--red-light); color:var(--red); }
+  .keyword-cloud{display:flex;flex-wrap:wrap;gap:6px}
+  .kw-pill{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:3px;font-size:0.72rem;font-weight:600}
+  .kw-pill .kw-c{font-family:'Space Mono',monospace;font-size:0.6rem;font-weight:700;opacity:0.7}
+  .kw-pill.pos-kw{background:var(--green-light);color:var(--green)}
+  .kw-pill.neg-kw{background:var(--red-light);color:var(--red)}
+
+  /* MENTION TAGS */
+  .mtag{display:inline-flex;align-items:center;gap:2px;font-size:0.6rem;font-weight:700;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:0.04em}
+  .mtag.wait{background:rgba(255,220,0,0.15);color:var(--amber)}
+  .mtag.price{background:rgba(168,85,247,0.15);color:#A855F7}
+  .mtag.service{background:rgba(74,158,255,0.15);color:#4A9EFF}
+
+  /* MENTION / THEME BARS */
+  .mention-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .mention-label{font-size:0.72rem;color:var(--ink-soft);width:80px;flex-shrink:0}
+  .mention-bar-wrap{flex:1;display:flex;flex-direction:column;gap:3px}
+  .mention-track{height:10px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+  .mention-fill{height:100%;border-radius:3px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1)}
+  .mention-pct{font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--ink-muted);width:32px;text-align:right}
 
   /* REVIEW FEED */
-  .review-feed { display:flex; flex-direction:column; }
-  .review-item { padding:14px 0; border-bottom:1px solid var(--border); }
-  .review-item:last-child { border-bottom:none; }
-  .review-item.flagged { border-left:3px solid var(--red); padding-left:14px; margin-left:-14px; }
-  .review-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
-  .review-author { font-weight:700; font-size:0.82rem; }
-  .review-stars { color:var(--amber); font-size:0.78rem; letter-spacing:1px; }
-  .review-meta { font-size:0.7rem; color:var(--ink-muted); margin-bottom:6px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-  .review-comment { font-size:0.8rem; color:var(--ink-soft); line-height:1.6; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
-  .review-comment.expanded { display:block; -webkit-line-clamp:unset; overflow:visible; }
-  .show-more-btn { font-size:0.75rem; color:var(--accent,#4f8ef7); background:none; border:none; padding:2px 0 0; cursor:pointer; }
-  .stag { display:inline-flex; padding:2px 7px; border-radius:3px; font-size:0.62rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; }
-  .stag.pos { background:var(--green-light); color:var(--green); }
-  .stag.neg { background:var(--red-light); color:var(--red); }
-  .stag.neu { background:rgba(255,255,255,0.06); color:var(--ink-muted); }
-  .flag-tag { display:inline-flex; align-items:center; gap:3px; padding:2px 7px; border-radius:3px; font-size:0.6rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; background:var(--red); color:#fff; }
-  .mtag { display:inline-flex; align-items:center; gap:2px; font-size:0.6rem; font-weight:700; padding:2px 6px; border-radius:3px; text-transform:uppercase; letter-spacing:0.04em; }
-  .mtag.wait    { background:rgba(255,220,0,0.15);    color:var(--amber); }
-  .mtag.price   { background:rgba(168,85,247,0.15);   color:#A855F7; }
-  .mtag.service { background:rgba(74,158,255,0.15);   color:#4A9EFF; }
+  .review-item{padding:14px 0;border-bottom:1px solid var(--border)}
+  .review-item:last-child{border-bottom:none}
+  .review-item.flagged{border-left:3px solid var(--red);padding-left:14px;margin-left:-14px}
+  .review-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+  .review-author{font-weight:700;font-size:0.82rem}
+  .review-stars{color:var(--amber);font-size:0.78rem;letter-spacing:1px}
+  .review-meta{font-size:0.7rem;color:var(--ink-muted);margin-bottom:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .review-comment{font-size:0.8rem;color:var(--ink-soft);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .review-comment.expanded{display:block;-webkit-line-clamp:unset;overflow:visible}
+  .stag{display:inline-flex;padding:2px 7px;border-radius:3px;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em}
+  .stag.pos{background:var(--green-light);color:var(--green)}
+  .stag.neg{background:var(--red-light);color:var(--red)}
+  .stag.neu{background:rgba(255,255,255,0.06);color:var(--ink-muted)}
+  .flag-tag{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:3px;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;background:var(--red);color:#fff}
+  .scraped-tag{display:inline-flex;align-items:center;gap:3px;padding:2px 6px;border-radius:3px;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;background:var(--amber-light);color:var(--amber)}
 
-  /* MENTION BARS (theme card) */
-  .mention-row { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
-  .mention-label { font-size:0.72rem; color:var(--ink-soft); width:80px; flex-shrink:0; }
-  .mention-bar-wrap { flex:1; display:flex; flex-direction:column; gap:3px; }
-  .mention-track { height:10px; background:var(--surface-2); border-radius:3px; overflow:hidden; }
-  .mention-fill { height:100%; border-radius:3px; transition:width 0.6s cubic-bezier(0.22,1,0.36,1); }
-  .mention-pct { font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--ink-muted); width:32px; text-align:right; }
+  /* CHART */
+  .chart-wrap{position:relative;width:100%}
+  .chart-wrap canvas{width:100%!important}
 
-  .chart-wrap { position:relative; width:100%; }
-  .chart-wrap canvas { width:100%!important; }
+  /* CONTROLS */
+  .filter-bar{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+  .filter-btn{font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;padding:5px 12px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--ink-muted);cursor:pointer;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.04em}
+  .filter-btn:hover{border-color:var(--ink-muted);color:var(--ink-soft)}
+  .filter-btn.active{background:var(--red);color:#fff;border-color:var(--red)}
+  .feed-controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+  .sort-select{font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;padding:5px 28px 5px 10px;border:1px solid var(--border);border-radius:4px;background:var(--surface-2);color:var(--ink-soft);cursor:pointer;text-transform:uppercase;letter-spacing:0.04em;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23666' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+  .sort-select:focus{outline:none;border-color:var(--red)}
+  .show-more-btn{display:block;width:100%;font-family:'Inter',sans-serif;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:12px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--ink-muted);cursor:pointer;transition:all 0.15s;margin-top:8px}
+  .show-more-btn:hover{border-color:var(--red);color:var(--red)}
+  .expand-btn{font-size:0.72rem;color:var(--amber);background:none;border:none;padding:3px 0 0;cursor:pointer;display:block}
+  .empty-msg{padding:20px 0;color:var(--ink-muted);font-size:0.82rem}
 
-  .filter-bar { display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap; }
-  .filter-btn { font-family:'Inter',sans-serif; font-size:0.72rem; font-weight:600; padding:5px 12px; border:1px solid var(--border); border-radius:4px; background:transparent; color:var(--ink-muted); cursor:pointer; transition:all 0.15s; text-transform:uppercase; letter-spacing:0.04em; }
-  .filter-btn:hover { border-color:var(--ink-muted); color:var(--ink-soft); }
-  .filter-btn.active { background:var(--red); color:#fff; border-color:var(--red); }
-
-  .empty-msg { padding:20px 0; color:var(--ink-muted); font-size:0.82rem; }
-
-  /* SORT & CONTROLS */
-  .feed-controls { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px; }
-  .sort-select { font-family:'Inter',sans-serif; font-size:0.72rem; font-weight:600; padding:5px 28px 5px 10px; border:1px solid var(--border); border-radius:4px; background:var(--surface-2); color:var(--ink-soft); cursor:pointer; text-transform:uppercase; letter-spacing:0.04em; appearance:none; -webkit-appearance:none; background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23666' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 8px center; }
-  .sort-select:focus { outline:none; border-color:var(--red); }
-  .show-more-btn { display:block; width:100%; font-family:'Inter',sans-serif; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; padding:12px; border:1px solid var(--border); border-radius:4px; background:transparent; color:var(--ink-muted); cursor:pointer; transition:all 0.15s; margin-top:8px; }
-  .show-more-btn:hover { border-color:var(--red); color:var(--red); }
-
+  /* RESPONSIVE */
   @media(max-width:1100px){
-    .grid-3[style*="1fr 1fr 1fr 1fr"]{grid-template-columns:1fr 1fr!important}
+    .grid-3.grid-4{grid-template-columns:1fr 1fr!important}
   }
   @media(max-width:900px){
-    .kpi-row{grid-template-columns:repeat(2,1fr)} .grid-2,.grid-3{grid-template-columns:1fr}
-    .grid-3[style]{grid-template-columns:1fr!important}
-    header{flex-direction:column;align-items:flex-start;gap:10px} .header-meta{text-align:left}
-    .brand h1{font-size:1.3rem} .nav-links{justify-content:flex-start}
+    .kpi-row{grid-template-columns:repeat(2,1fr)}
+    .grid-2,.grid-3{grid-template-columns:1fr}
+    .grid-3.grid-4{grid-template-columns:1fr!important}
+    header{flex-direction:column;align-items:flex-start;gap:10px}
+    .header-meta{text-align:left}
+    .nav-links{justify-content:flex-start}
+    .brand h1{font-size:1.3rem}
   }
   @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-  .kpi,.card{animation:fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both;}
+  .kpi,.card{animation:fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both}
   .kpi:nth-child(1){animation-delay:.03s}.kpi:nth-child(2){animation-delay:.06s}
   .kpi:nth-child(3){animation-delay:.09s}.kpi:nth-child(4){animation-delay:.12s}
   .kpi:nth-child(5){animation-delay:.15s}
@@ -168,6 +181,7 @@
 </head>
 <body>
 <div class="container">
+
   <header>
     <div class="brand">
       <h1>Hector's Deli</h1>
@@ -177,15 +191,27 @@
     <div class="header-meta">
       <strong id="total-reviews">—</strong> reviews / <strong id="venue-count">—</strong> locations<br>
       updated <strong id="last-updated">—</strong>
-      <div class="data-badge snapshot" id="source-badge"><span class="dot"></span><span id="source-label">snapshot</span></div>
+      <div class="data-badge snapshot" id="source-badge"><span class="dot"></span><span id="source-label">loading</span></div>
       <div class="nav-links">
-        <a href="./index.html" class="nav-link active">Review Dash</a>
+        <a href="./" class="nav-link active">Review Dash</a>
         <a href="./competitor_dash.html" class="nav-link">Market Intel →</a>
       </div>
     </div>
   </header>
 
   <div class="location-bar" id="location-bar"><span class="location-bar-label">Location</span></div>
+
+  <div class="date-bar" id="date-bar">
+    <span class="date-bar-label">Period</span>
+    <button class="date-btn active" data-days="0">All time</button>
+    <button class="date-btn" data-days="7">7 days</button>
+    <button class="date-btn" data-days="30">30 days</button>
+    <button class="date-btn" data-days="90">90 days</button>
+    <span class="date-sep">—</span>
+    <input type="date" id="date-from" class="date-input" title="From date">
+    <span class="date-sep">to</span>
+    <input type="date" id="date-to" class="date-input" title="To date">
+  </div>
 
   <div class="kpi-row">
     <div class="kpi"><div class="kpi-label">Google Rating</div><div class="kpi-value" id="kpi-avg">—</div><div class="kpi-sub" id="kpi-avg-sub"></div></div>
@@ -200,10 +226,10 @@
     <div class="card"><div class="card-title">Sentiment</div><div class="chart-wrap"><canvas id="sentimentChart" height="180"></canvas></div></div>
   </div>
 
-  <div class="grid-3" style="grid-template-columns:1fr 1fr 1fr 1fr">
+  <div class="grid-3 grid-4" style="grid-template-columns:1fr 1fr 1fr 1fr">
     <div class="card"><div class="card-title">Ratings</div><div class="rating-bars" id="rating-bars"></div></div>
-    <div class="card"><div class="card-title">Top Keywords — Positive</div><div class="keyword-cloud" id="kw-pos"></div></div>
-    <div class="card"><div class="card-title">Top Keywords — Negative</div><div class="keyword-cloud" id="kw-neg"></div></div>
+    <div class="card"><div class="card-title">Keywords — Positive</div><div class="keyword-cloud" id="kw-pos"></div></div>
+    <div class="card"><div class="card-title">Keywords — Negative</div><div class="keyword-cloud" id="kw-neg"></div></div>
     <div class="card"><div class="card-title">Review Themes</div><div id="theme-mentions"></div></div>
   </div>
 
@@ -219,7 +245,7 @@
     <div class="feed-controls">
       <div class="filter-bar" id="filter-bar">
         <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="flagged">Needs Attention</button>
+        <button class="filter-btn" data-filter="flagged">⚠ Attention</button>
         <button class="filter-btn" data-filter="Positive">Positive</button>
         <button class="filter-btn" data-filter="Neutral">Neutral</button>
         <button class="filter-btn" data-filter="Negative">Negative</button>
@@ -234,84 +260,152 @@
         <option value="sentiment">Most Negative</option>
       </select>
     </div>
-    <div class="review-feed" id="review-feed"></div>
+    <div id="review-feed"></div>
   </div>
-</div>
 
+</div>
 <script>
 const CSV_URL='./google_reviews.csv';
 const SNAPSHOT=[{"venue":"Hector's Bakery","place_id":"ChIJ5SiiPaVD1moReQEViHlGa-g","address":"33 Stewart St, Richmond VIC 3121","venue_rating":4.3,"venue_reviews":168,"reviewer":"Mick K","rating":5,"comment":"Great location. Right next to Richmond station. Awesome vibe inside and very friendly staff.","review_date":"2026-03-12","sentiment":"Positive","sentiment_score":0.482},{"venue":"Hector's Bakery","place_id":"ChIJ5SiiPaVD1moReQEViHlGa-g","address":"33 Stewart St, Richmond VIC 3121","venue_rating":4.3,"venue_reviews":167,"reviewer":"gus c","rating":5,"comment":"Cookie Monster, delicious baked goods. Always busy but friendly.","review_date":"2026-03-09","sentiment":"Positive","sentiment_score":0.492},{"venue":"Hector's Bakery","place_id":"ChIJ5SiiPaVD1moReQEViHlGa-g","address":"33 Stewart St, Richmond VIC 3121","venue_rating":4.3,"venue_reviews":167,"reviewer":"Lena Mishra","rating":5,"comment":"","review_date":"2026-03-02","sentiment":"Neutral","sentiment_score":0.0},{"venue":"Hector's Bakery","place_id":"ChIJ5SiiPaVD1moReQEViHlGa-g","address":"33 Stewart St, Richmond VIC 3121","venue_rating":4.3,"venue_reviews":167,"reviewer":"Amy","rating":3,"comment":"Service is great! Everyone was friendly and professional. Coffee was good. Unfortunately the scroll was not good.","review_date":"2026-02-19","sentiment":"Positive","sentiment_score":0.266},{"venue":"Hector's Bakery","place_id":"ChIJ5SiiPaVD1moReQEViHlGa-g","address":"33 Stewart St, Richmond VIC 3121","venue_rating":4.3,"venue_reviews":167,"reviewer":"biya susan binu","rating":5,"comment":"","review_date":"2026-02-01","sentiment":"Neutral","sentiment_score":0.0},{"venue":"Hector's Bakery","place_id":"ChIJ5SiiPaVD1moReQEViHlGa-g","address":"33 Stewart St, Richmond VIC 3121","venue_rating":4.3,"venue_reviews":167,"reviewer":"Geoff Boyle","rating":5,"comment":"Hectors deli still the best Reuben's in town","review_date":"2026-01-25","sentiment":"Positive","sentiment_score":0.6},{"venue":"Hector's Deli","place_id":"ChIJyT_pbABD1moRDAP0Mbql6QI","address":"61 Little Collins St, Melbourne VIC 3000","venue_rating":4.5,"venue_reviews":463,"reviewer":"alex jam gold","rating":5,"comment":"Small sandwich shop, but delivered a huge service. Everything was fresh and delicious.","review_date":"2026-03-12","sentiment":"Positive","sentiment_score":0.264},{"venue":"Hector's Deli","place_id":"ChIJyT_pbABD1moRDAP0Mbql6QI","address":"61 Little Collins St, Melbourne VIC 3000","venue_rating":4.5,"venue_reviews":462,"reviewer":"Eduardo Martinez","rating":4,"comment":"","review_date":"2026-03-12","sentiment":"Neutral","sentiment_score":0.0},{"venue":"Hector's Deli","place_id":"ChIJZ_w0Oupn1moRyYfWpkBnSCA","address":"253 Coventry St, South Melbourne VIC 3205","venue_rating":4.4,"venue_reviews":928,"reviewer":"Jamal Rawal","rating":5,"comment":"Apple turnover, was like an apple pie and custard in a croissant. Literally the best sweet I have ever eaten.","review_date":"2026-03-11","sentiment":"Positive","sentiment_score":0.286},{"venue":"Hector's Deli","place_id":"ChIJyT_pbABD1moRDAP0Mbql6QI","address":"61 Little Collins St, Melbourne VIC 3000","venue_rating":4.5,"venue_reviews":461,"reviewer":"Kearn Thompson","rating":4,"comment":"Service was friendly and prompt. The sandwiches were amazing. Quality ingredients and super fresh.","review_date":"2026-03-10","sentiment":"Neutral","sentiment_score":0.013},{"venue":"Hector's Deli","place_id":"ChIJZ_w0Oupn1moRyYfWpkBnSCA","address":"253 Coventry St, South Melbourne VIC 3205","venue_rating":4.4,"venue_reviews":927,"reviewer":"Isabella Pitt","rating":5,"comment":"Hector's did not disappoint. Service was friendly and fast, and the food was really tasty.","review_date":"2026-03-09","sentiment":"Positive","sentiment_score":0.341},{"venue":"Hector's Deli","place_id":"ChIJtVdgmvhC1moROxwhKPwolNQ","address":"1/94 Buckingham St, Richmond VIC 3121","venue_rating":4.6,"venue_reviews":1345,"reviewer":"David Chung","rating":1,"comment":"Got charged $10.20 for a donut. Public holiday surcharge. Original price was $6.00.","review_date":"2026-03-09","sentiment":"Neutral","sentiment_score":0.094},{"venue":"Hector's Deli","place_id":"ChIJ02xRi2JD1moRJQh-pBNsBeI","address":"111 Moor St, Fitzroy VIC 3065","venue_rating":4.5,"venue_reviews":690,"reviewer":"Pete Ft","rating":4,"comment":"","review_date":"2026-03-09","sentiment":"Neutral","sentiment_score":0.0},{"venue":"Hector's Deli","place_id":"ChIJyT_pbABD1moRDAP0Mbql6QI","address":"61 Little Collins St, Melbourne VIC 3000","venue_rating":4.5,"venue_reviews":461,"reviewer":"Lauren S","rating":1,"comment":"Got there at 1.30 and they'd already run out of food.","review_date":"2026-03-08","sentiment":"Positive","sentiment_score":0.5},{"venue":"Hector's Deli","place_id":"ChIJZ_w0Oupn1moRyYfWpkBnSCA","address":"253 Coventry St, South Melbourne VIC 3205","venue_rating":4.4,"venue_reviews":927,"reviewer":"Pooja K","rating":5,"comment":"","review_date":"2026-03-08","sentiment":"Neutral","sentiment_score":0.0},{"venue":"Hector's Deli","place_id":"ChIJtVdgmvhC1moROxwhKPwolNQ","address":"1/94 Buckingham St, Richmond VIC 3121","venue_rating":4.6,"venue_reviews":1345,"reviewer":"Pooja K","rating":5,"comment":"Loved it. Best fried chicken sandwich. Very nice hospitality.","review_date":"2026-03-08","sentiment":"Positive","sentiment_score":0.293},{"venue":"Hector's Deli","place_id":"ChIJZ_w0Oupn1moRyYfWpkBnSCA","address":"253 Coventry St, South Melbourne VIC 3205","venue_rating":4.4,"venue_reviews":927,"reviewer":"Vaishnavi Gawde","rating":1,"comment":"Very underwhelming sandwich. Waited for an hour. Overhyped and overpriced.","review_date":"2026-03-08","sentiment":"Neutral","sentiment_score":0.056},{"venue":"Hector's Deli","place_id":"ChIJtVdgmvhC1moROxwhKPwolNQ","address":"1/94 Buckingham St, Richmond VIC 3121","venue_rating":4.6,"venue_reviews":1345,"reviewer":"Sebastian Davies","rating":1,"comment":"","review_date":"2026-03-08","sentiment":"Neutral","sentiment_score":0.0},{"venue":"Hector's Deli","place_id":"ChIJZ_w0Oupn1moRyYfWpkBnSCA","address":"253 Coventry St, South Melbourne VIC 3205","venue_rating":4.4,"venue_reviews":927,"reviewer":"melbourne refri","rating":1,"comment":"Discriminatory and unacceptable behavior from staff.","review_date":"2026-03-08","sentiment":"Neutral","sentiment_score":-0.018},{"venue":"Hector's Deli","place_id":"ChIJ02xRi2JD1moRJQh-pBNsBeI","address":"111 Moor St, Fitzroy VIC 3065","venue_rating":4.5,"venue_reviews":690,"reviewer":"Chris Mikic","rating":1,"comment":"Don't take cash - ridiculous","review_date":"2026-03-08","sentiment":"Neutral","sentiment_score":0.0},{"venue":"Hector's Deli","place_id":"ChIJyT_pbABD1moRDAP0Mbql6QI","address":"61 Little Collins St, Melbourne VIC 3000","venue_rating":4.5,"venue_reviews":461,"reviewer":"nur alper","rating":1,"comment":"Today's experience was disappointing. The attitude made it unpleasant.","review_date":"2026-03-08","sentiment":"Negative","sentiment_score":-0.112},{"venue":"Hector's Deli","place_id":"ChIJZ_w0Oupn1moRyYfWpkBnSCA","address":"253 Coventry St, South Melbourne VIC 3205","venue_rating":4.4,"venue_reviews":927,"reviewer":"nur alper","rating":1,"comment":"Today's experience was disappointing. I hope customer service improves.","review_date":"2026-03-08","sentiment":"Negative","sentiment_score":-0.112},{"venue":"Hector's Deli","place_id":"ChIJtVdgmvhC1moROxwhKPwolNQ","address":"1/94 Buckingham St, Richmond VIC 3121","venue_rating":4.6,"venue_reviews":1345,"reviewer":"nur alper","rating":5,"comment":"Sorry, this review was meant for another branch.","review_date":"2026-03-08","sentiment":"Negative","sentiment_score":-0.5},{"venue":"Hector's Deli","place_id":"ChIJyT_pbABD1moRDAP0Mbql6QI","address":"61 Little Collins St, Melbourne VIC 3000","venue_rating":4.5,"venue_reviews":461,"reviewer":"Mahak Mithani","rating":3,"comment":"Overpriced, overrated, under seasoned.","review_date":"2026-03-07","sentiment":"Neutral","sentiment_score":-0.018},{"venue":"Hector's Deli","place_id":"ChIJ02xRi2JD1moRJQh-pBNsBeI","address":"111 Moor St, Fitzroy VIC 3065","venue_rating":4.5,"venue_reviews":690,"reviewer":"Gareth D'Souza","rating":4,"comment":"Decent chicken burger. Chips were a bit too salty.","review_date":"2026-03-06","sentiment":"Negative","sentiment_score":-0.217},{"venue":"Hector's Deli","place_id":"ChIJyT_pbABD1moRDAP0Mbql6QI","address":"61 Little Collins St, Melbourne VIC 3000","venue_rating":4.5,"venue_reviews":461,"reviewer":"Ava Hanmer","rating":1,"comment":"So disappointing! $17.50 for a fake toastie.","review_date":"2026-03-06","sentiment":"Negative","sentiment_score":-0.112},{"venue":"Hector's Deli","place_id":"ChIJ02xRi2JD1moRJQh-pBNsBeI","address":"111 Moor St, Fitzroy VIC 3065","venue_rating":4.5,"venue_reviews":690,"reviewer":"Hugh Macfarlane","rating":5,"comment":"","review_date":"2026-03-04","sentiment":"Neutral","sentiment_score":0.0},{"venue":"Hector's Deli","place_id":"ChIJtVdgmvhC1moROxwhKPwolNQ","address":"1/94 Buckingham St, Richmond VIC 3121","venue_rating":4.6,"venue_reviews":1345,"reviewer":"Andrew Lopez","rating":1,"comment":"Don't come here not worth the hype. Chicken was way too fatty. Croissant was rock hard.","review_date":"2026-03-04","sentiment":"Negative","sentiment_score":-0.128},{"venue":"Hector's Deli","place_id":"ChIJ02xRi2JD1moRJQh-pBNsBeI","address":"111 Moor St, Fitzroy VIC 3065","venue_rating":4.5,"venue_reviews":690,"reviewer":"D T","rating":1,"comment":"Waited in line for ages. Sold out of most sandwiches before 1pm.","review_date":"2026-02-28","sentiment":"Neutral","sentiment_score":-0.025},{"venue":"Hector's Deli (Normanby Chambers)","place_id":"ChIJk6x1KsRd1moRVm9PGDgSzNc","address":"430 Little Collins St, Melbourne VIC 3000","venue_rating":4.7,"venue_reviews":47,"reviewer":"Julz","rating":5,"comment":"Beef pickles with Hectors sauce was very nice.","review_date":"2026-03-08","sentiment":"Neutral","sentiment_score":0.04},{"venue":"Hector's Deli (Normanby Chambers)","place_id":"ChIJk6x1KsRd1moRVm9PGDgSzNc","address":"430 Little Collins St, Melbourne VIC 3000","venue_rating":4.7,"venue_reviews":47,"reviewer":"Rick Milovanovic","rating":5,"comment":"","review_date":"2026-02-27","sentiment":"Neutral","sentiment_score":0.0},{"venue":"Hector's Deli (Normanby Chambers)","place_id":"ChIJk6x1KsRd1moRVm9PGDgSzNc","address":"430 Little Collins St, Melbourne VIC 3000","venue_rating":4.7,"venue_reviews":47,"reviewer":"Sarah K","rating":5,"comment":"","review_date":"2026-02-24","sentiment":"Neutral","sentiment_score":0.0},{"venue":"Hector's Deli (Normanby Chambers)","place_id":"ChIJk6x1KsRd1moRVm9PGDgSzNc","address":"430 Little Collins St, Melbourne VIC 3000","venue_rating":4.7,"venue_reviews":47,"reviewer":"Rachel de Sousa","rating":5,"comment":"Absolutely awesome staff. Best food and coffee in town.","review_date":"2026-02-10","sentiment":"Positive","sentiment_score":0.787},{"venue":"Hector's Deli (Normanby Chambers)","place_id":"ChIJk6x1KsRd1moRVm9PGDgSzNc","address":"430 Little Collins St, Melbourne VIC 3000","venue_rating":4.7,"venue_reviews":47,"reviewer":"Mitchell Jarrett","rating":5,"comment":"Was yum, fast coffee and fresh sandwiches.","review_date":"2026-02-10","sentiment":"Positive","sentiment_score":0.25}];
 
-// ── VENUE DISPLAY NAMES ──
-// Map place_id to your preferred name. Add new shops here.
-const VENUE_NAMES = {
-  "ChIJZ_w0Oupn1moRyYfWpkBnSCA": "South Melbourne",
-  "ChIJtVdgmvhC1moROxwhKPwolNQ": "Richmond OG",
-  "ChIJ02xRi2JD1moRJQh-pBNsBeI": "Fitzroy",
-  "ChIJk6x1KsRd1moRVm9PGDgSzNc": "Normanby Chambers",
-  "ChIJyT_pbABD1moRDAP0Mbql6QI": "Little Collins OG",
-  "ChIJ5SiiPaVD1moReQEViHlGa-g": "The Bakery",
-  "ChIJqdHsOp9D1moRtBJ17g-tCVY": "Kiosk",
+const VENUE_NAMES={
+  "ChIJZ_w0Oupn1moRyYfWpkBnSCA":"South Melbourne",
+  "ChIJtVdgmvhC1moROxwhKPwolNQ":"Richmond OG",
+  "ChIJ02xRi2JD1moRJQh-pBNsBeI":"Fitzroy",
+  "ChIJk6x1KsRd1moRVm9PGDgSzNc":"Normanby Chambers",
+  "ChIJyT_pbABD1moRDAP0Mbql6QI":"Little Collins OG",
+  "ChIJ5SiiPaVD1moReQEViHlGa-g":"The Bakery",
+  "ChIJqdHsOp9D1moRtBJ17g-tCVY":"Kiosk",
 };
 
-let DATA=[],allVenueMap={},allAddresses=[],isLive=false,activeLoc='all',activeSent='all',sChart=null,tChart=null;
-const escH=s=>{const d=document.createElement('div');d.textContent=s;return d.innerHTML};
-function toggleComment(el,btn){if(!el)return;el.classList.toggle('expanded');if(!btn)btn=el.nextElementSibling;if(btn&&btn.classList.contains('show-more-btn'))btn.textContent=el.classList.contains('expanded')?'Show less':'Show more';}
-const displayName=r=>{if(r.place_id&&VENUE_NAMES[r.place_id])return VENUE_NAMES[r.place_id];return r.address.split(',')[0]};
-const buildVM=d=>{const m={};d.forEach(r=>{if(!m[r.address])m[r.address]={venue:r.venue,address:r.address,place_id:r.place_id,venue_rating:r.venue_rating,venue_reviews:r.venue_reviews,reviews:[]};m[r.address].reviews.push(r)});return m};
-const normD=r=>{if(!r)return'';r=r.trim();if(/^\d{4}-\d{2}-\d{2}/.test(r))return r.slice(0,10);const p=r.split('/');if(p.length===3)return p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0');return r};
-const normS=s=>{if(!s)return'Neutral';const c=s.trim().charAt(0).toUpperCase()+s.trim().slice(1).toLowerCase();return['Positive','Negative','Neutral'].includes(c)?c:'Neutral'};
-const parseC=t=>Papa.parse(t,{header:true,skipEmptyLines:true}).data.map(r=>({place_id:(r.place_id||'').trim(),venue:(r.venue||'').trim(),address:(r.address||'').trim(),venue_rating:parseFloat(r.venue_rating)||0,venue_reviews:parseInt(r.venue_reviews)||0,reviewer:(r.reviewer||'').trim(),rating:parseInt(r.rating)||0,comment:(r.comment||'').trim(),review_date:normD(r.review_date),sentiment:normS(r.sentiment),sentiment_score:parseFloat(r.sentiment_score)||0})).filter(r=>r.address&&r.rating>0&&r.rating<=5);
-const locName=addr=>{const v=allVenueMap[addr];if(v&&v.place_id&&VENUE_NAMES[v.place_id])return VENUE_NAMES[v.place_id];return addr.split(',')[0]};
-const filt=()=>activeLoc==='all'?DATA:DATA.filter(r=>r.address===activeLoc);
-const isFlag=r=>r.rating<=2;
-const getWS=d=>{const dt=new Date(d+'T00:00:00');const dy=dt.getDay();dt.setDate(dt.getDate()-dy+(dy===0?-6:1));return dt.toISOString().slice(0,10)};
-const weeksAgo=n=>{const d=new Date();d.setDate(d.getDate()-n*7);const dy=d.getDay();d.setDate(d.getDate()-dy+(dy===0?-6:1));return d.toISOString().slice(0,10)};
-const STOP=new Set('the a an and or but in on at to for of with by from is it was are were be been being have has had do does did will would could should may might shall can this that these those i me my we our you your he she they them their its not no so if then than too very just about up out all also as into over after before between through during some each which what when where how who more most other only same here there her his him us am get got went come came back said really one two much even well like don\'t didn\'t won\'t it\'s i\'m i\'ve we\'re they\'re that\'s there\'s here\'s'.split(' '));
-
-// ── MENTION DETECTION ──
+// ── MENTION KEYWORDS ──
 const WAIT_KW    = ['waited','waiting','wait','queue','line','minutes','mins','slow','quick','fast','prompt','long wait','no wait'];
 const PRICE_KW   = ['expensive','cheap','pricey','overpriced','value','worth','affordable','reasonable','steep','price','cost','$'];
 const SERVICE_KW = ['friendly','rude','slow','fast','quick','prompt','service','staff','welcoming','helpful','attentive','ignored','efficient'];
-const hasMention = (text, kws) => { const t = (text||'').toLowerCase(); return kws.some(k => t.includes(k)); };
-function extractKW(revs,sf){const c={};revs.filter(r=>r.comment&&(!sf||r.sentiment===sf)).forEach(r=>{const ws=r.comment.toLowerCase().replace(/[^a-z\s'-]/g,' ').split(/\s+/);const seen=new Set();ws.forEach(w=>{w=w.replace(/^['-]+|['-]+$/g,'');if(w.length<3||STOP.has(w)||seen.has(w))return;seen.add(w);c[w]=(c[w]||0)+1})});return Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,10)}
+const hasMention = (text, kws) => { const t=(text||'').toLowerCase(); return kws.some(k=>t.includes(k)); };
 
-async function loadData(){if(CSV_URL){try{const r=await fetch(CSV_URL);if(r.ok){const t=await r.text();const rows=parseC(t);if(rows.length>0){DATA=rows;isLive=true;boot();return}}}catch(e){console.warn('CSV fail:',e)}}DATA=SNAPSHOT;isLive=false;boot()}
-function boot(){allVenueMap=buildVM(DATA);allAddresses=Object.keys(allVenueMap).sort((a,b)=>allVenueMap[b].reviews.length-allVenueMap[a].reviews.length);const bg=document.getElementById('source-badge'),lb=document.getElementById('source-label');if(isLive){bg.className='data-badge live';lb.textContent='live'}else{bg.className='data-badge snapshot';lb.textContent='snapshot'}renderAll()}
+let DATA=[],allVenueMap={},allAddresses=[],isLive=false;
+let activeLoc='all',activeSent='all',activeDateDays=0,customFrom='',customTo='';
+let activeSort='newest',showCount=10;
+let sChart=null,tChart=null;
 
+const escH=s=>{const d=document.createElement('div');d.textContent=s;return d.innerHTML};
+const normD=r=>{if(!r)return'';r=r.trim();if(/^\d{4}-\d{2}-\d{2}/.test(r))return r.slice(0,10);const p=r.split('/');if(p.length===3)return p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0');return r};
+const normS=s=>{if(!s)return'Neutral';const c=s.trim().charAt(0).toUpperCase()+s.trim().slice(1).toLowerCase();return['Positive','Negative','Neutral'].includes(c)?c:'Neutral'};
+const parseC=t=>Papa.parse(t,{header:true,skipEmptyLines:true}).data.map(r=>(({
+  place_id:(r.place_id||'').trim(),venue:(r.venue||'').trim(),address:(r.address||'').trim(),
+  venue_rating:parseFloat(r.venue_rating)||0,venue_reviews:parseInt(r.venue_reviews)||0,
+  reviewer:(r.reviewer||'').trim(),rating:parseInt(r.rating)||0,comment:(r.comment||'').trim(),
+  review_date:normD(r.review_date),review_time:parseInt(r.review_time)||0,
+  sentiment:normS(r.sentiment),sentiment_score:parseFloat(r.sentiment_score)||0,
+  scraped_at:(r.scraped_at||'').trim(),
+})))
+.filter(r=>r.address&&r.rating>0&&r.rating<=5);
+
+const buildVM=d=>{const m={};d.forEach(r=>{if(!m[r.address])m[r.address]={venue:r.venue,address:r.address,place_id:r.place_id,venue_rating:r.venue_rating,venue_reviews:r.venue_reviews,reviews:[]};m[r.address].reviews.push(r)});return m};
+const locName=addr=>{const v=allVenueMap[addr];if(v&&v.place_id&&VENUE_NAMES[v.place_id])return VENUE_NAMES[v.place_id];return addr.split(',')[0]};
+const displayName=r=>{if(r.place_id&&VENUE_NAMES[r.place_id])return VENUE_NAMES[r.place_id];return r.address.split(',')[0]};
+const isFlag=r=>r.rating<=2;
+const isNew=r=>{
+  if(!r.scraped_at)return false;
+  const s=new Date(r.scraped_at),rd=new Date(r.review_date+'T00:00:00');
+  const diff=(s-rd)/(1000*60*60*24);
+  return diff>=0&&diff<2;
+};
+
+// ── DATE HELPERS ──
+const toISO=d=>d.toISOString().slice(0,10);
+const dateFrom=()=>{
+  if(customFrom)return customFrom;
+  if(!activeDateDays)return'';
+  const d=new Date();d.setDate(d.getDate()-activeDateDays);return toISO(d);
+};
+const dateTo=()=>customTo||'';
+
+const getWS=d=>{const dt=new Date(d+'T00:00:00');const dy=dt.getDay();dt.setDate(dt.getDate()-dy+(dy===0?-6:1));return toISO(dt)};
+const weeksAgo=n=>{const d=new Date();d.setDate(d.getDate()-n*7);const dy=d.getDay();d.setDate(d.getDate()-dy+(dy===0?-6:1));return toISO(d)};
+
+// ── FILTER ──
+const filt=()=>{
+  let d=activeLoc==='all'?DATA:DATA.filter(r=>r.address===activeLoc);
+  const df=dateFrom(),dt=dateTo();
+  if(df)d=d.filter(r=>r.review_date>=df);
+  if(dt)d=d.filter(r=>r.review_date<=dt);
+  return d;
+};
+
+// ── KEYWORDS ──
+const STOP=new Set('the a an and or but in on at to for of with by from is it was are were be been being have has had do does did will would could should may might shall can this that these those i me my we our you your he she they them their its not no so if then than too very just about up out all also as into over after before between through during some each which what when where how who more most other only same here there her his him us am get got went come came back said really one two much even well like'.split(' '));
+function extractKW(revs,sf){const c={};revs.filter(r=>r.comment&&(!sf||r.sentiment===sf)).forEach(r=>{const ws=r.comment.toLowerCase().replace(/[^a-z\s'-]/g,' ').split(/\s+/);const seen=new Set();ws.forEach(w=>{w=w.replace(/^['-]+|['-]+$/g,'');if(w.length<3||STOP.has(w)||seen.has(w))return;seen.add(w);c[w]=(c[w]||0)+1})}); return Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,10)}
+
+Chart.defaults.color='#666';Chart.defaults.borderColor='#2A2A2A';Chart.defaults.font.family="'Inter'";
+
+// ── LOAD ──
+async function loadData(){
+  if(CSV_URL){try{const r=await fetch(CSV_URL);if(r.ok){const t=await r.text();const rows=parseC(t);if(rows.length>0){DATA=rows;isLive=true;boot();return}}}catch(e){console.warn('CSV fail:',e)}}
+  DATA=SNAPSHOT;isLive=false;boot();
+}
+
+function boot(){
+  allVenueMap=buildVM(DATA);
+  allAddresses=Object.keys(allVenueMap).sort((a,b)=>allVenueMap[b].reviews.length-allVenueMap[a].reviews.length);
+  const bg=document.getElementById('source-badge'),lb=document.getElementById('source-label');
+  if(isLive){bg.className='data-badge live';lb.textContent='live'}else{bg.className='data-badge snapshot';lb.textContent='snapshot'}
+  renderAll();
+}
+
+// ── LOCATION BAR ──
 const locBar=document.getElementById('location-bar');
-function renderLB(){locBar.innerHTML='<span class="location-bar-label">Location</span>';const mk=(l,k,c)=>{const b=document.createElement('button');b.className='loc-btn'+(activeLoc===k?' active':'');b.dataset.loc=k;b.innerHTML=escH(l)+'<span class="rc">'+c+'</span>';locBar.appendChild(b)};mk('All','all',DATA.length);allAddresses.forEach(a=>mk(locName(a),a,allVenueMap[a].reviews.length))}
+function renderLB(){
+  locBar.innerHTML='<span class="location-bar-label">Location</span>';
+  const df=dateFrom(),dt=dateTo();
+  const mk=(l,k,c)=>{const b=document.createElement('button');b.className='loc-btn'+(activeLoc===k?' active':'');b.dataset.loc=k;b.innerHTML=escH(l)+'<span class="rc">'+c+'</span>';locBar.appendChild(b)};
+  const totalFiltered=DATA.filter(r=>(!df||r.review_date>=df)&&(!dt||r.review_date<=dt)).length;
+  mk('All','all',totalFiltered);
+  allAddresses.forEach(a=>{
+    let cnt=allVenueMap[a].reviews.filter(r=>(!df||r.review_date>=df)&&(!dt||r.review_date<=dt)).length;
+    if(cnt>0)mk(locName(a),a,cnt);
+  });
+}
 locBar.addEventListener('click',e=>{const b=e.target.closest('.loc-btn');if(!b)return;activeLoc=b.dataset.loc;showCount=10;renderAll()});
 document.getElementById('venue-tbody').addEventListener('click',e=>{const tr=e.target.closest('tr');if(!tr||!tr.dataset.addr)return;activeLoc=activeLoc===tr.dataset.addr?'all':tr.dataset.addr;showCount=10;renderAll()});
 
-const chartColors={grid:'#2A2A2A',text:'#666'};
-Chart.defaults.color=chartColors.text;Chart.defaults.borderColor=chartColors.grid;Chart.defaults.font.family="'Inter'";
+// ── DATE BAR ──
+document.getElementById('date-bar').addEventListener('click',e=>{
+  const b=e.target.closest('.date-btn');if(!b)return;
+  document.querySelectorAll('.date-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');activeDateDays=parseInt(b.dataset.days)||0;
+  customFrom='';customTo='';
+  document.getElementById('date-from').value='';document.getElementById('date-to').value='';
+  document.getElementById('date-from').classList.remove('active');document.getElementById('date-to').classList.remove('active');
+  showCount=10;renderAll();
+});
+function onCustomDate(){
+  customFrom=document.getElementById('date-from').value;
+  customTo=document.getElementById('date-to').value;
+  if(customFrom||customTo){
+    document.querySelectorAll('.date-btn').forEach(x=>x.classList.remove('active'));
+    activeDateDays=0;
+    document.getElementById('date-from').classList.toggle('active',!!customFrom);
+    document.getElementById('date-to').classList.toggle('active',!!customTo);
+  }
+  showCount=10;renderAll();
+}
+document.getElementById('date-from').addEventListener('change',onCustomDate);
+document.getElementById('date-to').addEventListener('change',onCustomDate);
 
+// ── RENDER ALL ──
 function renderAll(){
   const data=filt(),n=data.length;renderLB();
   document.getElementById('total-reviews').textContent=DATA.length;
-  document.getElementById('last-updated').textContent=DATA.map(r=>r.review_date).sort().pop();
+  document.getElementById('last-updated').textContent=DATA.map(r=>r.review_date).sort().pop()||'—';
   document.getElementById('venue-count').textContent=allAddresses.length;
 
-  // Google Rating — average of venue_rating across the filtered locations.
-  // venue_rating is the live Google star rating scraped from Places API,
-  // which is what teams see on Google Maps. This is the authoritative number.
+  // Google Rating — average of venue_rating per unique location (not per review)
   const venueRatings=[];
-  if(activeLoc==='all'){
-    // One rating per unique venue (not per review — avoids weighting by review volume)
-    Object.values(allVenueMap).forEach(v=>{if(v.venue_rating)venueRatings.push(v.venue_rating)});
-  } else {
-    const v=allVenueMap[activeLoc];
-    if(v&&v.venue_rating)venueRatings.push(v.venue_rating);
-  }
-  const googleAvg=venueRatings.length
-    ? (venueRatings.reduce((s,r)=>s+r,0)/venueRatings.length).toFixed(1)
-    : '—';
-
-  // Scraped review avg — calculated from individual review ratings in the CSV.
-  // Shown as context below the Google Rating, not the headline number.
-  // Lower than Google avg because recent reviews skew negative and we only
-  // capture ~5 per venue per scrape run.
+  if(activeLoc==='all'){Object.values(allVenueMap).forEach(v=>{if(v.venue_rating)venueRatings.push(v.venue_rating)})}
+  else{const v=allVenueMap[activeLoc];if(v&&v.venue_rating)venueRatings.push(v.venue_rating)}
+  const googleAvg=venueRatings.length?(venueRatings.reduce((s,r)=>s+r,0)/venueRatings.length).toFixed(1):'—';
   const scrapedAvg=n?(data.reduce((s,r)=>s+r.rating,0)/n).toFixed(1):'—';
 
   const sc={Positive:0,Neutral:0,Negative:0};data.forEach(r=>sc[r.sentiment]++);
@@ -319,28 +413,24 @@ function renderAll(){
   const flagged=data.filter(isFlag).length;
   const tw=weeksAgo(0),lw=weeksAgo(1);
   const twData=data.filter(r=>r.review_date>=tw);
-  const twr=twData.length;
-  const lwr=data.filter(r=>r.review_date>=lw&&r.review_date<tw).length;
+  const twr=twData.length,lwr=data.filter(r=>r.review_date>=lw&&r.review_date<tw).length;
   const wd=twr-lwr;
-
-  // Week avg rating — from scraped reviews this week only
   const twAvg=twr?(twData.reduce((s,r)=>s+r.rating,0)/twr).toFixed(1):null;
 
-  // Google Rating KPI — the number teams recognise
+  // Google Rating KPI
   const avgEl=document.getElementById('kpi-avg');
   avgEl.textContent=googleAvg;
-  // Colour: green ≥4.5, amber 4.0–4.4, red <4.0
   const gNum=parseFloat(googleAvg);
   avgEl.className='kpi-value'+(gNum>=4.5?' v-green':gNum>=4.0?' v-amber':' v-red');
   document.getElementById('kpi-avg-sub').innerHTML=
-    `${venueRatings.length} location${venueRatings.length!==1?'s':''}`+
-    (scrapedAvg!=='—'?` &nbsp;·&nbsp; <span style="color:var(--ink-muted)">${scrapedAvg}★ recent</span>`:'');
+    venueRatings.length+' location'+(venueRatings.length!==1?'s':'')+
+    (scrapedAvg!=='—'?' &nbsp;·&nbsp; <span style="color:var(--ink-muted)">'+scrapedAvg+'★ recent</span>':'');
 
-  // This Week KPI — count headline, week avg rating as sub-label
+  // This Week KPI
   document.getElementById('kpi-week').textContent=twr;
   document.getElementById('kpi-week-sub').innerHTML=
-    (twAvg?`<span style="color:var(--amber);font-weight:700">${twAvg}★</span> avg &nbsp;`:'')
-    +(wd!==0?'<span class="kpi-delta '+(wd>0?'up':'down')+'">'+(wd>0?'▲+':'▼')+Math.abs(wd)+'</span>':'this week');
+    (twAvg?'<span style="color:var(--amber);font-weight:700">'+twAvg+'★</span> avg &nbsp;':'')+
+    (wd!==0?'<span class="kpi-delta '+(wd>0?'up':'down')+'">'+(wd>0?'▲+':'▼')+Math.abs(wd)+'</span>':'this week');
 
   const pp=n?((sc.Positive/n)*100).toFixed(0):'0';
   document.getElementById('kpi-pos').textContent=pp+'%';
@@ -350,104 +440,157 @@ function renderAll(){
   document.getElementById('kpi-flag').textContent=flagged;
   document.getElementById('kpi-flag-sub').textContent=flagged?'1-2 star':'all clear';
 
-  // Bars
+  // Rating bars
   const bE=document.getElementById('rating-bars'),mx=Math.max(...rc,1);bE.innerHTML='';
   for(let i=5;i>=1;i--){const c=rc[i-1],p=(c/mx)*100;bE.innerHTML+='<div class="rating-bar-row"><div class="label">'+i+'<span class="star">★</span></div><div class="bar-track"><div class="bar-fill r'+i+'" style="width:'+p+'%"></div></div><div class="count">'+c+'</div></div>'}
 
-  // Sentiment
+  // Sentiment doughnut
   if(sChart){sChart.data.datasets[0].data=[sc.Positive,sc.Neutral,sc.Negative];sChart.update()}
-  else{sChart=new Chart(document.getElementById('sentimentChart'),{type:'doughnut',data:{labels:['Positive','Neutral','Negative'],datasets:[{data:[sc.Positive,sc.Neutral,sc.Negative],backgroundColor:['#2ECC40','#666','#D70F00'],borderWidth:0,hoverOffset:4}]},options:{cutout:'65%',responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:14,usePointStyle:true,pointStyleWidth:8,font:{size:11}}}}}})}
+  else{sChart=new Chart(document.getElementById('sentimentChart'),{type:'doughnut',data:{labels:['Positive','Neutral','Negative'],datasets:[{data:[sc.Positive,sc.Neutral,sc.Negative],backgroundColor:['#2ECC40','#666','#D70F00'],borderWidth:0,hoverOffset:4}]},options:{cutout:'65%',responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:14,usePointStyle:true,pointStyleWidth:8,font:{size:11}}}}}}}
 
-  renderTrend(data);renderKW(data);renderThemes(data);renderLead();renderFeed();
+  renderTrend(data);renderKW(data);renderThemes(data);renderLead(data);renderFeed();
 }
 
-function renderThemes(data) {
-  const el = document.getElementById('theme-mentions');
-  const n  = data.length || 1;
-  const rows = [
-    { label:'Wait / Queue', kws:WAIT_KW,    col:'var(--amber)', pct:0 },
-    { label:'Price / Value', kws:PRICE_KW,   col:'#A855F7',      pct:0 },
-    { label:'Service',       kws:SERVICE_KW, col:'#4A9EFF',      pct:0 },
-  ];
-  rows.forEach(row => { row.pct = Math.round(data.filter(r => hasMention(r.comment, row.kws)).length / n * 100); });
-
-  el.innerHTML = rows.map(row => `
-    <div class="mention-row">
-      <span class="mention-label">${row.label}</span>
-      <div class="mention-bar-wrap">
-        <div class="mention-track"><div class="mention-fill" style="width:${row.pct}%;background:${row.col};opacity:0.75"></div></div>
-      </div>
-      <span class="mention-pct">${row.pct}%</span>
-    </div>
-  `).join('') + `<div style="font-size:0.68rem;color:var(--ink-muted);margin-top:10px;line-height:1.6">
-    ${data.filter(r=>hasMention(r.comment,WAIT_KW)).length} wait &nbsp;·&nbsp;
-    ${data.filter(r=>hasMention(r.comment,PRICE_KW)).length} price &nbsp;·&nbsp;
-    ${data.filter(r=>hasMention(r.comment,SERVICE_KW)).length} service mentions
-  </div>`;
-}
-
+// ── TREND CHART ──
 function renderTrend(data){
   const wks={};data.forEach(r=>{const w=getWS(r.review_date);if(!wks[w])wks[w]={sum:0,cnt:0};wks[w].sum+=r.rating;wks[w].cnt++});
   const sk=Object.keys(wks).sort();
   const lb=sk.map(w=>{const d=new Date(w+'T00:00:00');return d.toLocaleDateString('en-AU',{day:'numeric',month:'short'})});
   const av=sk.map(w=>(wks[w].sum/wks[w].cnt).toFixed(2)),cn=sk.map(w=>wks[w].cnt);
   if(tChart){tChart.data.labels=lb;tChart.data.datasets[0].data=av;tChart.data.datasets[1].data=cn;tChart.update()}
-  else{tChart=new Chart(document.getElementById('trendChart'),{type:'line',data:{labels:lb,datasets:[{label:'Avg Rating',data:av,borderColor:'#FFDC00',backgroundColor:'rgba(255,220,0,0.08)',fill:true,tension:0.3,yAxisID:'y',pointRadius:4,pointBackgroundColor:'#FFDC00'},{label:'Volume',data:cn,borderColor:'#666',backgroundColor:'transparent',tension:0.3,yAxisID:'y1',pointRadius:3,pointBackgroundColor:'#666',borderDash:[4,4]}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},scales:{y:{position:'left',min:1,max:5,ticks:{stepSize:1},grid:{color:'#1C1C1C'}},y1:{position:'right',beginAtZero:true,ticks:{precision:0},grid:{drawOnChartArea:false}}},plugins:{legend:{labels:{usePointStyle:true,pointStyleWidth:8,padding:12,font:{size:11}}}}}})}
+  else{tChart=new Chart(document.getElementById('trendChart'),{type:'line',data:{labels:lb,datasets:[{label:'Avg Rating',data:av,borderColor:'#FFDC00',backgroundColor:'rgba(255,220,0,0.08)',fill:true,tension:0.3,yAxisID:'y',pointRadius:4,pointBackgroundColor:'#FFDC00'},{label:'Volume',data:cn,borderColor:'#666',backgroundColor:'transparent',tension:0.3,yAxisID:'y1',pointRadius:3,pointBackgroundColor:'#666',borderDash:[4,4]}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},scales:{y:{position:'left',min:1,max:5,ticks:{stepSize:1},grid:{color:'#1C1C1C'}},y1:{position:'right',beginAtZero:true,ticks:{precision:0},grid:{drawOnChartArea:false}}},plugins:{legend:{labels:{usePointStyle:true,pointStyleWidth:8,padding:12,font:{size:11}}}}}}}
 }
 
+// ── KEYWORDS ──
 function renderKW(data){
   const pk=extractKW(data,'Positive'),nk=extractKW(data.filter(r=>r.rating<=2||r.sentiment==='Negative'),null);
-  document.getElementById('kw-pos').innerHTML=pk.length?pk.map(([w,c])=>'<span class="kw-pill pos-kw">'+escH(w)+' <span class="kw-c">'+c+'</span></span>').join(''):'<div class="empty-msg">Not enough data yet.</div>';
+  document.getElementById('kw-pos').innerHTML=pk.length?pk.map(([w,c])=>'<span class="kw-pill pos-kw">'+escH(w)+' <span class="kw-c">'+c+'</span></span>').join(''):'<div class="empty-msg">Not enough data.</div>';
   document.getElementById('kw-neg').innerHTML=nk.length?nk.map(([w,c])=>'<span class="kw-pill neg-kw">'+escH(w)+' <span class="kw-c">'+c+'</span></span>').join(''):'<div class="empty-msg">No negative keywords.</div>';
 }
 
-function renderLead(){
-  const tb=document.getElementById('venue-tbody');tb.innerHTML='';
-  const rows=allAddresses.map(addr=>{const v=allVenueMap[addr],revs=v.reviews,avg=(revs.reduce((s,r)=>s+r.rating,0)/revs.length).toFixed(1),pos=revs.filter(r=>r.sentiment==='Positive').length,neg=revs.filter(r=>r.sentiment==='Negative').length,neu=revs.filter(r=>r.sentiment==='Neutral').length,ss=revs.length?((pos-neg)/revs.length):0;return{addr,v,avg:parseFloat(avg),pos,neg,neu,ss,total:revs.length}});
-  rows.sort((a,b)=>b.ss-a.ss);const mxS=Math.max(...rows.map(r=>Math.abs(r.ss)),0.01);
-  rows.forEach(r=>{const pct=Math.abs(r.ss)/mxS*100,col=r.ss>=0?'var(--green)':'var(--red)',disp=(r.ss>=0?'+':'')+r.ss.toFixed(2),ia=activeLoc===r.addr;
-  tb.innerHTML+=`<tr data-addr="${escH(r.addr)}" class="${ia?'active-row':''}"><td><div class="venue-name">${escH(locName(r.addr))}</div><div class="venue-address">${escH(r.addr)}</div></td><td><span class="rating-badge"><span class="star">★</span>${r.v.venue_rating}</span></td><td><div class="rank-bar-wrap"><span class="rank-score" style="color:${col}">${disp}</span><div class="rank-bar" style="width:${pct}%;background:${col};opacity:0.3"></div></div></td><td>${r.total}</td><td><span class="sentiment-dot pos"></span>${r.pos} <span class="sentiment-dot neu"></span>${r.neu} <span class="sentiment-dot neg"></span>${r.neg}</td></tr>`});
+// ── THEME MENTIONS ──
+function renderThemes(data){
+  const el=document.getElementById('theme-mentions');
+  const n=data.length||1;
+  const rows=[
+    {label:'Wait / Queue',kws:WAIT_KW,col:'var(--amber)'},
+    {label:'Price / Value',kws:PRICE_KW,col:'#A855F7'},
+    {label:'Service',kws:SERVICE_KW,col:'#4A9EFF'},
+  ];
+  rows.forEach(row=>{row.pct=Math.round(data.filter(r=>hasMention(r.comment,row.kws)).length/n*100)});
+  el.innerHTML=rows.map(row=>`
+    <div class="mention-row">
+      <span class="mention-label">${row.label}</span>
+      <div class="mention-bar-wrap"><div class="mention-track"><div class="mention-fill" style="width:${row.pct}%;background:${row.col};opacity:0.75"></div></div></div>
+      <span class="mention-pct">${row.pct}%</span>
+    </div>`).join('')+
+    `<div style="font-size:0.68rem;color:var(--ink-muted);margin-top:10px;line-height:1.6">
+      ${data.filter(r=>hasMention(r.comment,WAIT_KW)).length} wait &nbsp;·&nbsp;
+      ${data.filter(r=>hasMention(r.comment,PRICE_KW)).length} price &nbsp;·&nbsp;
+      ${data.filter(r=>hasMention(r.comment,SERVICE_KW)).length} service
+    </div>`;
 }
 
-const feedEl=document.getElementById('review-feed');
-let activeSort='newest', showCount=10;
+// ── LEADERBOARD ──
+function renderLead(data){
+  const tb=document.getElementById('venue-tbody');tb.innerHTML='';
+  const df=dateFrom(),dt=dateTo();
+  const rows=allAddresses.map(addr=>{
+    const v=allVenueMap[addr];
+    let revs=v.reviews;
+    if(df)revs=revs.filter(r=>r.review_date>=df);
+    if(dt)revs=revs.filter(r=>r.review_date<=dt);
+    if(!revs.length)return null;
+    const pos=revs.filter(r=>r.sentiment==='Positive').length;
+    const neg=revs.filter(r=>r.sentiment==='Negative').length;
+    const neu=revs.filter(r=>r.sentiment==='Neutral').length;
+    const ss=revs.length?((pos-neg)/revs.length):0;
+    return{addr,v,pos,neg,neu,ss,total:revs.length};
+  }).filter(Boolean);
+  rows.sort((a,b)=>b.ss-a.ss);
+  const mxS=Math.max(...rows.map(r=>Math.abs(r.ss)),0.01);
+  rows.forEach(r=>{
+    const pct=Math.abs(r.ss)/mxS*100,col=r.ss>=0?'var(--green)':'var(--red)';
+    const disp=(r.ss>=0?'+':'')+r.ss.toFixed(2),ia=activeLoc===r.addr;
+    tb.innerHTML+=`<tr data-addr="${escH(r.addr)}" class="${ia?'active-row':''}">
+      <td><div class="venue-name">${escH(locName(r.addr))}</div><div class="venue-address">${escH(r.addr)}</div></td>
+      <td><span class="rating-badge"><span class="star">★</span>${r.v.venue_rating}</span></td>
+      <td><div class="rank-bar-wrap"><span class="rank-score" style="color:${col}">${disp}</span><div class="rank-bar" style="width:${pct}%;background:${col};opacity:0.3"></div></div></td>
+      <td>${r.total}</td>
+      <td><span class="sentiment-dot pos"></span>${r.pos} <span class="sentiment-dot neu"></span>${r.neu} <span class="sentiment-dot neg"></span>${r.neg}</td>
+    </tr>`;
+  });
+}
 
+// ── REVIEW FEED ──
 function sortReviews(arr){
   switch(activeSort){
-    case 'newest': return arr.sort((a,b)=>b.review_date.localeCompare(a.review_date));
-    case 'oldest': return arr.sort((a,b)=>a.review_date.localeCompare(b.review_date));
+    case 'newest':      return arr.sort((a,b)=>b.review_date.localeCompare(a.review_date));
+    case 'oldest':      return arr.sort((a,b)=>a.review_date.localeCompare(b.review_date));
     case 'rating-high': return arr.sort((a,b)=>b.rating-a.rating||b.review_date.localeCompare(a.review_date));
-    case 'rating-low': return arr.sort((a,b)=>a.rating-b.rating||b.review_date.localeCompare(a.review_date));
-    case 'sentiment': return arr.sort((a,b)=>a.sentiment_score-b.sentiment_score);
+    case 'rating-low':  return arr.sort((a,b)=>a.rating-b.rating||b.review_date.localeCompare(a.review_date));
+    case 'sentiment':   return arr.sort((a,b)=>a.sentiment_score-b.sentiment_score);
     default: return arr;
   }
 }
 
+function toggleComment(el,btn){
+  if(!el)return;
+  el.classList.toggle('expanded');
+  if(!btn)btn=el.nextElementSibling;
+  if(btn&&btn.classList.contains('expand-btn'))btn.textContent=el.classList.contains('expanded')?'Show less':'Show more';
+}
+
 function renderFeed(){
+  const feedEl=document.getElementById('review-feed');
   let d=filt();
-  if(activeSent==='flagged')        d=d.filter(isFlag);
-  else if(activeSent==='wait')      d=d.filter(r=>hasMention(r.comment,WAIT_KW));
-  else if(activeSent==='price')     d=d.filter(r=>hasMention(r.comment,PRICE_KW));
-  else if(activeSent!=='all')       d=d.filter(r=>r.sentiment===activeSent);
+  if(activeSent==='flagged')       d=d.filter(isFlag);
+  else if(activeSent==='wait')     d=d.filter(r=>hasMention(r.comment,WAIT_KW));
+  else if(activeSent==='price')    d=d.filter(r=>hasMention(r.comment,PRICE_KW));
+  else if(activeSent!=='all')      d=d.filter(r=>r.sentiment===activeSent);
   const sorted=sortReviews([...d]);
   if(!sorted.length){feedEl.innerHTML='<div class="empty-msg">No reviews match.</div>';return}
   const visible=sorted.slice(0,showCount);
   const remaining=sorted.length-showCount;
+
   feedEl.innerHTML=visible.map(r=>{
-    const st='★'.repeat(r.rating)+'☆'.repeat(5-r.rating),cl=r.sentiment==='Positive'?'pos':r.sentiment==='Negative'?'neg':'neu',fl=isFlag(r);
+    const st='★'.repeat(r.rating)+'☆'.repeat(5-r.rating);
+    const cl=r.sentiment==='Positive'?'pos':r.sentiment==='Negative'?'neg':'neu';
+    const fl=isFlag(r);
+    const nw=isNew(r);
     const mtags=[
-      hasMention(r.comment,WAIT_KW)    ? '<span class="mtag wait">⏱ wait</span>'    : '',
-      hasMention(r.comment,PRICE_KW)   ? '<span class="mtag price">$ price</span>'  : '',
-      hasMention(r.comment,SERVICE_KW) ? '<span class="mtag service">★ service</span>' : '',
+      hasMention(r.comment,WAIT_KW)    ?'<span class="mtag wait">⏱ wait</span>'    :'',
+      hasMention(r.comment,PRICE_KW)   ?'<span class="mtag price">$ price</span>'  :'',
+      hasMention(r.comment,SERVICE_KW) ?'<span class="mtag service">★ service</span>':'',
     ].filter(Boolean).join('');
-    return '<div class="review-item'+(fl?' flagged':'')+'"><div class="review-header"><span class="review-author">'+escH(r.reviewer)+'</span><span class="review-stars">'+st+'</span></div><div class="review-meta"><span>'+escH(locName(r.address))+'</span><span>'+r.review_date+'</span><span class="stag '+cl+'">'+r.sentiment+'</span>'+(fl?'<span class="flag-tag">⚠ Attention</span>':'')+mtags+'</div>'+(r.comment?'<div class="review-comment" onclick="toggleComment(this)">'+escH(r.comment)+'</div>'+(r.comment.length>120?'<button class="show-more-btn" onclick="toggleComment(this.previousElementSibling,this)">Show more</button>':''):'')+'</div>';
-  }).join('')
-  +(remaining>0?'<button class="show-more-btn" id="show-more-btn">Show More ('+remaining+' remaining)</button>':'');
-  const smBtn=document.getElementById('show-more-btn');
-  if(smBtn)smBtn.addEventListener('click',()=>{showCount+=10;renderFeed()});
+    const hasLong=r.comment&&r.comment.length>160;
+    return `<div class="review-item${fl?' flagged':''}">
+      <div class="review-header">
+        <span class="review-author">${escH(r.reviewer)}</span>
+        <span class="review-stars">${st}</span>
+      </div>
+      <div class="review-meta">
+        <span>${escH(locName(r.address))}</span>
+        <span>${r.review_date}</span>
+        <span class="stag ${cl}">${r.sentiment}</span>
+        ${fl?'<span class="flag-tag">⚠ Attention</span>':''}
+        ${nw?'<span class="scraped-tag">📥 New</span>':''}
+        ${mtags}
+      </div>
+      ${r.comment?`<div class="review-comment${hasLong?'':' expanded'}" onclick="toggleComment(this)">${escH(r.comment)}</div>${hasLong?'<button class="expand-btn" onclick="toggleComment(this.previousElementSibling,this)">Show more</button>':''}`:''}
+    </div>`;
+  }).join('') + (remaining>0?`<button class="show-more-btn" id="smb">Show More (${remaining} remaining)</button>`:'');
+
+  const smb=document.getElementById('smb');
+  if(smb)smb.addEventListener('click',()=>{showCount+=10;renderFeed()});
 }
 
-document.getElementById('filter-bar').addEventListener('click',e=>{if(!e.target.classList.contains('filter-btn'))return;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));e.target.classList.add('active');activeSent=e.target.dataset.filter;showCount=10;renderFeed()});
+// ── EVENT LISTENERS ──
+document.getElementById('filter-bar').addEventListener('click',e=>{
+  if(!e.target.classList.contains('filter-btn'))return;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');activeSent=e.target.dataset.filter;showCount=10;renderFeed();
+});
 document.getElementById('sort-select').addEventListener('change',e=>{activeSort=e.target.value;showCount=10;renderFeed()});
 
 loadData();
