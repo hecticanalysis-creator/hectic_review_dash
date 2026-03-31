@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hector's Deli | Market Intel</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0A0A0A; --surface:#141414; --surface-2:#1C1C1C; --surface-3:#242424;
+    --ink:#F5F5F5; --ink-soft:#A0A0A0; --ink-muted:#666;
+    --red:#D70F00; --red-dark:#9B0A00; --red-light:rgba(215,15,0,0.12);
+    --green:#2ECC40; --green-light:rgba(46,204,64,0.12);
+    --amber:#FFDC00; --amber-light:rgba(255,220,0,0.12);
+    --blue:#4A9EFF; --blue-light:rgba(74,158,255,0.12);
+    --purple:#A855F7; --purple-light:rgba(168,85,247,0.12);
+    --border:#2A2A2A; --radius:8px;
+    --hectors:#D70F00;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .container{max-width:1280px;margin:0 auto;padding:32px 24px 80px}
+
+  /* HEADER */
+  header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:36px;padding-bottom:20px;border-bottom:2px solid var(--red)}
+  .brand{display:flex;align-items:baseline;gap:12px}
+  .brand h1{font-family:'Space Mono',monospace;font-weight:700;font-size:1.6rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink)}
+  .brand .divider{width:2px;height:20px;background:var(--red);align-self:center}
+  .brand .subtitle{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:var(--red)}
+  .header-meta{text-align:right;font-size:0.75rem;color:var(--ink-muted);line-height:1.7;font-family:'Space Mono',monospace}
+  .header-meta strong{color:var(--ink-soft)}
+  .nav-links{display:flex;gap:10px;margin-top:8px;justify-content:flex-end}
+  .nav-link{font-family:'Space Mono',monospace;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:4px 10px;border-radius:4px;border:1px solid var(--border);color:var(--ink-muted);text-decoration:none;transition:all 0.15s}
+  .nav-link:hover{border-color:var(--ink-soft);color:var(--ink-soft)}
+  .nav-link.active{background:var(--red);color:#fff;border-color:var(--red)}
+
+  /* FILTER TOOLBAR */
+  .toolbar{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap;align-items:center}
+  .toolbar-label{font-family:'Space Mono',monospace;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-muted);margin-right:4px}
+  .pill{font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;padding:6px 14px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--ink-muted);cursor:pointer;transition:all 0.15s;white-space:nowrap;text-transform:uppercase;letter-spacing:0.04em}
+  .pill:hover{border-color:var(--ink-muted);color:var(--ink-soft)}
+  .pill.active{background:var(--red);color:#fff;border-color:var(--red)}
+  .toolbar-sep{width:1px;height:24px;background:var(--border);margin:0 4px}
+
+  /* KPI ROW */
+  .kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:28px}
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;animation:fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both}
+  .kpi:nth-child(1){animation-delay:.03s}.kpi:nth-child(2){animation-delay:.06s}
+  .kpi:nth-child(3){animation-delay:.09s}.kpi:nth-child(4){animation-delay:.12s}
+  .kpi:nth-child(5){animation-delay:.15s}.kpi:nth-child(6){animation-delay:.18s}
+  .kpi-label{font-family:'Space Mono',monospace;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-muted);margin-bottom:8px}
+  .kpi-value{font-family:'Space Mono',monospace;font-weight:700;font-size:1.8rem;line-height:1;letter-spacing:-0.02em}
+  .kpi-sub{font-size:0.72rem;color:var(--ink-muted);margin-top:6px}
+  .v-green{color:var(--green)} .v-red{color:var(--red)} .v-amber{color:var(--amber)} .v-blue{color:var(--blue)}
+
+  /* HECTOR'S HIGHLIGHT BAR */
+  .hectors-bar{display:flex;gap:12px;margin-bottom:28px;padding:16px 20px;background:var(--red-light);border:1px solid rgba(215,15,0,0.25);border-radius:var(--radius);align-items:center;flex-wrap:wrap}
+  .hectors-bar-label{font-family:'Space Mono',monospace;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--red);white-space:nowrap}
+  .hectors-stat{display:flex;flex-direction:column;gap:2px;padding:0 16px;border-right:1px solid rgba(215,15,0,0.2)}
+  .hectors-stat:last-child{border-right:none}
+  .hectors-stat-val{font-family:'Space Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--ink)}
+  .hectors-stat-lbl{font-size:0.65rem;color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.06em}
+
+  /* GRIDS */
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:28px}
+  .grid-12{display:grid;grid-template-columns:1fr 2fr;gap:16px;margin-bottom:28px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;animation:fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both}
+  .card-title{font-family:'Space Mono',monospace;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-muted);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+
+  /* COMPETITOR TABLE */
+  .comp-table{width:100%;border-collapse:collapse;font-size:0.8rem}
+  .comp-table th{text-align:left;font-family:'Space Mono',monospace;font-weight:700;font-size:0.58rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-muted);padding:0 10px 10px;border-bottom:1px solid var(--border)}
+  .comp-table td{padding:10px;border-bottom:1px solid var(--border);vertical-align:middle}
+  .comp-table tr:last-child td{border-bottom:none}
+  .comp-table tr.hectors-row{background:var(--red-light)}
+  .comp-table tr.hectors-row td{border-bottom-color:rgba(215,15,0,0.15)}
+  .comp-name{font-weight:700;color:var(--ink)}
+  .comp-catchment{font-size:0.68rem;color:var(--ink-muted);margin-top:1px}
+  .hectors-tag{display:inline-block;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:1px 5px;border-radius:3px;background:var(--red);color:#fff;margin-left:5px;vertical-align:middle}
+  .star{color:var(--amber)}
+  .rating-num{font-family:'Space Mono',monospace;font-weight:700;font-size:0.85rem}
+
+  /* RATING BAR INLINE */
+  .rbar-wrap{display:flex;align-items:center;gap:6px}
+  .rbar-track{flex:1;height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden;min-width:60px}
+  .rbar-fill{height:100%;border-radius:4px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1)}
+
+  /* PRICE BADGE */
+  .price-badge{display:inline-block;font-family:'Space Mono',monospace;font-size:0.72rem;font-weight:700;padding:2px 7px;border-radius:3px;background:var(--surface-2);color:var(--ink-soft)}
+  .price-badge.p1{color:var(--green);background:var(--green-light)}
+  .price-badge.p2{color:var(--amber);background:var(--amber-light)}
+  .price-badge.p3{color:var(--red);background:var(--red-light)}
+  .price-badge.p4{color:var(--purple);background:var(--purple-light)}
+
+  /* HOURS BADGE */
+  .hours-tag{font-size:0.68rem;color:var(--ink-muted);font-family:'Space Mono',monospace}
+
+  /* MENTION BARS */
+  .mention-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .mention-label{font-size:0.72rem;color:var(--ink-soft);width:90px;flex-shrink:0}
+  .mention-bar{flex:1;height:12px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+  .mention-fill{height:100%;border-radius:3px;transition:width 0.6s}
+  .mention-pct{font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--ink-muted);width:36px;text-align:right}
+
+  /* CATCHMENT PILLS */
+  .catchment-pill{display:inline-block;font-size:0.62rem;font-weight:700;padding:2px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:0.06em}
+  .cp-smb{background:rgba(74,158,255,0.15);color:var(--blue)}
+  .cp-richmond{background:rgba(168,85,247,0.15);color:var(--purple)}
+  .cp-fitzroy{background:rgba(255,220,0,0.15);color:var(--amber)}
+  .cp-cbd{background:rgba(46,204,64,0.15);color:var(--green)}
+  .cp-sy{background:rgba(215,15,0,0.15);color:#FF6B6B}
+  .cp-carlton{background:rgba(255,255,255,0.1);color:var(--ink-muted)}
+
+  /* REVIEW CARDS */
+  .rev-card{padding:12px 0;border-bottom:1px solid var(--border)}
+  .rev-card:last-child{border-bottom:none}
+  .rev-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+  .rev-author{font-weight:700;font-size:0.82rem}
+  .rev-stars{color:var(--amber);font-size:0.78rem;letter-spacing:1px}
+  .rev-meta{font-size:0.7rem;color:var(--ink-muted);margin-bottom:6px;display:flex;gap:10px;flex-wrap:wrap}
+  .rev-comment{font-size:0.8rem;color:var(--ink-soft);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+  /* SORT/FILTER CONTROLS */
+  .feed-controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px;flex-wrap:wrap}
+  .sort-select{font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;padding:5px 28px 5px 10px;border:1px solid var(--border);border-radius:4px;background:var(--surface-2);color:var(--ink-soft);cursor:pointer;text-transform:uppercase;letter-spacing:0.04em;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23666' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+  .sort-select:focus{outline:none;border-color:var(--red)}
+  .filter-pills{display:flex;gap:6px;flex-wrap:wrap}
+  .show-more-btn{display:block;width:100%;font-family:'Inter',sans-serif;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:12px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--ink-muted);cursor:pointer;transition:all 0.15s;margin-top:8px}
+  .show-more-btn:hover{border-color:var(--red);color:var(--red)}
+
+  /* STAG */
+  .stag{display:inline-flex;padding:2px 7px;border-radius:3px;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em}
+  .stag.pos{background:var(--green-light);color:var(--green)}
+  .stag.neg{background:var(--red-light);color:var(--red)}
+  .stag.neu{background:rgba(255,255,255,0.06);color:var(--ink-muted)}
+
+  /* MENTION TAGS */
+  .mtag{display:inline-flex;align-items:center;gap:3px;font-size:0.6rem;font-weight:700;padding:1px 5px;border-radius:3px;text-transform:uppercase;letter-spacing:0.04em}
+  .mtag.wait{background:rgba(255,220,0,0.15);color:var(--amber)}
+  .mtag.price{background:rgba(168,85,247,0.15);color:var(--purple)}
+  .mtag.service{background:rgba(74,158,255,0.15);color:var(--blue)}
+
+  /* BENCHMARK CHART */
+  .chart-wrap{position:relative;width:100%}
+  .chart-wrap canvas{width:100%!important}
+
+  /* EMPTY */
+  .empty-msg{padding:20px 0;color:var(--ink-muted);font-size:0.82rem}
+
+  /* DATA BADGE */
+  .data-badge{display:inline-flex;align-items:center;gap:5px;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:3px 8px;border-radius:4px;margin-top:6px}
+  .data-badge.live{background:var(--green-light);color:var(--green)}
+  .data-badge.snapshot{background:var(--red-light);color:var(--red)}
+  .data-badge .dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+  @media(max-width:1100px){.kpi-row{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:900px){
+    .kpi-row{grid-template-columns:repeat(2,1fr)}
+    .grid-2,.grid-3,.grid-12{grid-template-columns:1fr}
+    header{flex-direction:column;align-items:flex-start;gap:10px}
+    .header-meta{text-align:left}
+    .nav-links{justify-content:flex-start}
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <h1>Hector's Deli</h1>
+      <div class="divider"></div>
+      <span class="subtitle">Market Intel</span>
+    </div>
+    <div class="header-meta">
+      <strong id="total-competitors">—</strong> competitors / <strong id="total-reviews">—</strong> reviews tracked<br>
+      updated <strong id="last-updated">—</strong>
+      <div class="data-badge snapshot" id="source-badge"><span class="dot"></span><span id="source-label">loading</span></div>
+      <div class="nav-links">
+        <a href="Data/index.html" class="nav-link">← Review Dash</a>
+        <a href="competitor_dash.html" class="nav-link active">Market Intel</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- CATCHMENT FILTER -->
+  <div class="toolbar" id="catchment-bar">
+    <span class="toolbar-label">Catchment</span>
+  </div>
+
+  <!-- KPI ROW -->
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-label">Market Avg Rating</div><div class="kpi-value v-amber" id="kpi-mkt-avg">—</div><div class="kpi-sub" id="kpi-mkt-sub"></div></div>
+    <div class="kpi"><div class="kpi-label">Hector's Avg</div><div class="kpi-value" id="kpi-hec-avg">—</div><div class="kpi-sub" id="kpi-hec-sub"></div></div>
+    <div class="kpi"><div class="kpi-label">Vs Market</div><div class="kpi-value" id="kpi-delta">—</div><div class="kpi-sub">rating gap</div></div>
+    <div class="kpi"><div class="kpi-label">Top Rated</div><div class="kpi-value v-green" id="kpi-top">—</div><div class="kpi-sub" id="kpi-top-sub"></div></div>
+    <div class="kpi"><div class="kpi-label">Wait Mentions</div><div class="kpi-value v-amber" id="kpi-wait">—</div><div class="kpi-sub">% of reviews</div></div>
+    <div class="kpi"><div class="kpi-label">Price Mentions</div><div class="kpi-value v-blue" id="kpi-price-m">—</div><div class="kpi-sub">% of reviews</div></div>
+  </div>
+
+  <!-- HECTOR'S SNAPSHOT BAR -->
+  <div class="hectors-bar" id="hectors-bar">
+    <span class="hectors-bar-label">⬤ Hector's Avg</span>
+    <div class="hectors-stat"><span class="hectors-stat-val" id="hb-rating">—</span><span class="hectors-stat-lbl">Avg Rating</span></div>
+    <div class="hectors-stat"><span class="hectors-stat-val" id="hb-reviews">—</span><span class="hectors-stat-lbl">Total Reviews</span></div>
+    <div class="hectors-stat"><span class="hectors-stat-val" id="hb-pos">—</span><span class="hectors-stat-lbl">Positive %</span></div>
+    <div class="hectors-stat"><span class="hectors-stat-val" id="hb-wait">—</span><span class="hectors-stat-lbl">Wait Mentions</span></div>
+    <div class="hectors-stat"><span class="hectors-stat-val" id="hb-locations">—</span><span class="hectors-stat-lbl">Locations</span></div>
+  </div>
+
+  <!-- BENCHMARK TABLE + CHART -->
+  <div class="grid-12" style="margin-bottom:28px">
+    <div class="card">
+      <div class="card-title">Benchmark — Rating vs Volume</div>
+      <div class="chart-wrap"><canvas id="bubbleChart" height="280"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Competitor Leaderboard</div>
+      <table class="comp-table">
+        <thead><tr>
+          <th>Name</th>
+          <th>Rating</th>
+          <th>Reviews</th>
+          <th>Price</th>
+          <th>Hours</th>
+          <th>Catchment</th>
+        </tr></thead>
+        <tbody id="comp-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SENTIMENT + MENTIONS -->
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">Sentiment Distribution</div>
+      <div class="chart-wrap"><canvas id="sentChart" height="200"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Review Theme Mentions</div>
+      <div id="mention-bars"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Price Level Distribution</div>
+      <div id="price-dist"></div>
+    </div>
+  </div>
+
+  <!-- RATING COMPARISON -->
+  <div class="card" style="margin-bottom:28px">
+    <div class="card-title">Rating by Competitor — vs Hector's Average</div>
+    <div class="chart-wrap"><canvas id="barChart" height="180"></canvas></div>
+  </div>
+
+  <!-- REVIEW FEED -->
+  <div class="card">
+    <div class="card-title">Competitor Reviews</div>
+    <div class="feed-controls">
+      <div class="filter-pills" id="filter-pills">
+        <button class="pill active" data-filter="all">All</button>
+        <button class="pill" data-filter="Positive">Positive</button>
+        <button class="pill" data-filter="Negative">Negative</button>
+        <button class="pill" data-filter="Neutral">Neutral</button>
+        <button class="pill" data-filter="wait">Mentions Wait</button>
+        <button class="pill" data-filter="price">Mentions Price</button>
+      </div>
+      <select class="sort-select" id="sort-select">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="rating-high">Rating High → Low</option>
+        <option value="rating-low">Rating Low → High</option>
+        <option value="sentiment">Most Negative</option>
+      </select>
+    </div>
+    <div id="review-feed"></div>
+  </div>
+
+</div>
+<script>
+// ── CONFIG ──
+const COMP_CSV   = './competitor_reviews.csv';
+const HECTOR_CSV = './google_reviews.csv';
+
+// Hector's place IDs so we can merge them in the bubble chart
+const HECTOR_IDS = new Set([
+  "ChIJZ_w0Oupn1moRyYfWpkBnSCA",
+  "ChIJtVdgmvhC1moROxwhKPwolNQ",
+  "ChIJ02xRi2JD1moRJQh-pBNsBeI",
+  "ChIJk6x1KsRd1moRVm9PGDgSzNc",
+  "ChIJyT_pbABD1moRDAP0Mbql6QI",
+  "ChIJ5SiiPaVD1moReQEViHlGa-g",
+  "ChIJqdHsOp9D1moRtBJ17g-tCVY",
+]);
+
+const HECTOR_NAMES = {
+  "ChIJZ_w0Oupn1moRyYfWpkBnSCA": "South Melbourne",
+  "ChIJtVdgmvhC1moROxwhKPwolNQ": "Richmond OG",
+  "ChIJ02xRi2JD1moRJQh-pBNsBeI": "Fitzroy",
+  "ChIJk6x1KsRd1moRVm9PGDgSzNc": "Normanby Chambers",
+  "ChIJyT_pbABD1moRDAP0Mbql6QI": "Little Collins OG",
+  "ChIJ5SiiPaVD1moReQEViHlGa-g": "The Bakery",
+  "ChIJqdHsOp9D1moRtBJ17g-tCVY": "Kiosk",
+};
+
+const CATCHMENT_CLASSES = {
+  'South Melbourne':'cp-smb','Richmond':'cp-richmond','Fitzroy':'cp-fitzroy',
+  'CBD':'cp-cbd','South Yarra':'cp-sy','Carlton':'cp-carlton',
+};
+
+let COMP_DATA=[], HECTOR_DATA=[], activeCatchment='all', activeFilter='all', activeSort='newest', showCount=15;
+let bubbleChart=null, sentChart=null, barChart=null;
+
+Chart.defaults.color='#666';
+Chart.defaults.borderColor='#2A2A2A';
+Chart.defaults.font.family="'Inter'";
+
+const esc=s=>{const d=document.createElement('div');d.textContent=s;return d.innerHTML};
+const normS=s=>{if(!s)return'Neutral';const c=s.trim()[0].toUpperCase()+s.trim().slice(1).toLowerCase();return['Positive','Negative','Neutral'].includes(c)?c:'Neutral'};
+const parseBool=v=>v==='True'||v===true||v==='true'||v==='1'||v===1;
+
+// ── PARSE CSV ──
+function parseCompCSV(text){
+  return Papa.parse(text,{header:true,skipEmptyLines:true}).data.map(r=>({
+    place_id:         (r.place_id||'').trim(),
+    name:             (r.name||'').trim(),
+    catchment:        (r.catchment||'').trim(),
+    address:          (r.address||'').trim(),
+    venue_rating:     parseFloat(r.venue_rating)||0,
+    venue_reviews:    parseInt(r.venue_reviews)||0,
+    price_level:      r.price_level!==''&&r.price_level!=null?parseInt(r.price_level):null,
+    price_label:      (r.price_label||'—').trim(),
+    reviewer:         (r.reviewer||'').trim(),
+    rating:           parseInt(r.rating)||0,
+    comment:          (r.comment||'').trim(),
+    review_date:      (r.review_date||'').trim(),
+    sentiment:        normS(r.sentiment),
+    sentiment_score:  parseFloat(r.sentiment_score)||0,
+    mentions_wait:    parseBool(r.mentions_wait),
+    mentions_price:   parseBool(r.mentions_price),
+    mentions_service: parseBool(r.mentions_service),
+    price_in_review:  r.price_in_review&&r.price_in_review!==''?parseFloat(r.price_in_review):null,
+  })).filter(r=>r.name&&r.rating>0&&r.rating<=5);
+}
+
+function parseHectorCSV(text){
+  return Papa.parse(text,{header:true,skipEmptyLines:true}).data.map(r=>({
+    place_id:(r.place_id||'').trim(),
+    venue:(r.venue||'').trim(),
+    venue_rating:parseFloat(r.venue_rating)||0,
+    venue_reviews:parseInt(r.venue_reviews)||0,
+    rating:parseInt(r.rating)||0,
+    sentiment:normS(r.sentiment),
+    comment:(r.comment||'').trim(),
+    review_date:(r.review_date||'').trim().slice(0,10),
+    mentions_wait: /waited|waiting|wait|queue|line|slow|quick|fast|prompt/i.test(r.comment||''),
+  })).filter(r=>r.rating>0&&r.rating<=5);
+}
+
+// ── LOAD DATA ──
+async function loadData(){
+  let compOk=false, hectorOk=false;
+  try{
+    const r=await fetch(COMP_CSV);
+    if(r.ok){const t=await r.text();COMP_DATA=parseCompCSV(t);compOk=COMP_DATA.length>0}
+  }catch(e){console.warn('Comp CSV fail:',e)}
+  try{
+    const r=await fetch(HECTOR_CSV);
+    if(r.ok){const t=await r.text();HECTOR_DATA=parseHectorCSV(t);hectorOk=HECTOR_DATA.length>0}
+  }catch(e){console.warn('Hector CSV fail:',e)}
+
+  const badge=document.getElementById('source-badge'),lbl=document.getElementById('source-label');
+  if(compOk){badge.className='data-badge live';lbl.textContent='live'}
+  else{badge.className='data-badge snapshot';lbl.textContent='no data — run script first';return}
+
+  boot();
+}
+
+// ── BOOT ──
+function boot(){
+  const catchments=[...new Set(COMP_DATA.map(r=>r.catchment))].sort();
+  const bar=document.getElementById('catchment-bar');
+  bar.innerHTML='<span class="toolbar-label">Catchment</span>';
+  const mk=(l,k)=>{const b=document.createElement('button');b.className='pill'+(activeCatchment===k?' active':'');b.dataset.c=k;b.textContent=l;bar.appendChild(b)};
+  mk('All','all');
+  catchments.forEach(c=>mk(c,c));
+  renderAll();
+}
+
+document.getElementById('catchment-bar').addEventListener('click',e=>{
+  const b=e.target.closest('.pill');if(!b||!b.dataset.c)return;
+  activeCatchment=b.dataset.c;showCount=15;
+  document.querySelectorAll('#catchment-bar .pill').forEach(p=>p.classList.toggle('active',p.dataset.c===activeCatchment));
+  renderAll();
+});
+
+// ── FILTER ──
+function filt(){
+  return activeCatchment==='all'?COMP_DATA:COMP_DATA.filter(r=>r.catchment===activeCatchment);
+}
+
+// ── VENUE MAP ──
+function buildVenueMap(data){
+  const m={};
+  data.forEach(r=>{
+    if(!m[r.name])m[r.name]={name:r.name,catchment:r.catchment,place_id:r.place_id,
+      venue_rating:r.venue_rating,venue_reviews:r.venue_reviews,price_level:r.price_level,
+      price_label:r.price_label,reviews:[],address:r.address};
+    m[r.name].reviews.push(r);
+  });
+  return m;
+}
+
+// ── HECTOR VENUE MAP ──
+function buildHectorVenueMap(){
+  const m={};
+  HECTOR_DATA.forEach(r=>{
+    const n=HECTOR_NAMES[r.place_id]||r.venue;
+    if(!m[n])m[n]={name:n,place_id:r.place_id,venue_rating:r.venue_rating,venue_reviews:r.venue_reviews,reviews:[]};
+    m[n].reviews.push(r);
+  });
+  return m;
+}
+
+// ── RENDER ALL ──
+function renderAll(){
+  const data=filt();
+  const vm=buildVenueMap(data);
+  const hvm=buildHectorVenueMap();
+  const venues=Object.values(vm);
+
+  // Header stats
+  document.getElementById('total-competitors').textContent=Object.keys(vm).length;
+  document.getElementById('total-reviews').textContent=data.length;
+  document.getElementById('last-updated').textContent=data.map(r=>r.review_date).filter(Boolean).sort().pop()||'—';
+
+  // Market avg
+  const mktAvg=data.length?(data.reduce((s,r)=>s+r.rating,0)/data.length).toFixed(2):null;
+  const topVenue=venues.sort((a,b)=>b.venue_rating-a.venue_rating)[0];
+
+  // Hector's agg
+  const hRevs=HECTOR_DATA;
+  const hAvg=hRevs.length?(hRevs.reduce((s,r)=>s+r.rating,0)/hRevs.length).toFixed(2):null;
+  const hPos=hRevs.length?Math.round(hRevs.filter(r=>r.sentiment==='Positive').length/hRevs.length*100):0;
+  const hWait=hRevs.length?Math.round(hRevs.filter(r=>r.mentions_wait).length/hRevs.length*100):0;
+  const hLocs=Object.keys(hvm).length;
+
+  const delta=mktAvg&&hAvg?(parseFloat(hAvg)-parseFloat(mktAvg)).toFixed(2):null;
+  const waitPct=data.length?Math.round(data.filter(r=>r.mentions_wait).length/data.length*100):0;
+  const pricePct=data.length?Math.round(data.filter(r=>r.mentions_price).length/data.length*100):0;
+
+  // KPIs
+  document.getElementById('kpi-mkt-avg').textContent=mktAvg||'—';
+  document.getElementById('kpi-mkt-sub').textContent=data.length+' competitor reviews';
+  document.getElementById('kpi-hec-avg').textContent=hAvg||'—';
+  document.getElementById('kpi-hec-sub').textContent=hRevs.length+' Hector\'s reviews';
+  const dEl=document.getElementById('kpi-delta');
+  if(delta!=null){
+    const pos=parseFloat(delta)>=0;
+    dEl.textContent=(pos?'+':'')+delta;
+    dEl.className='kpi-value '+(pos?'v-green':'v-red');
+  }else dEl.textContent='—';
+  document.getElementById('kpi-top').textContent=topVenue?topVenue.venue_rating+'★':'—';
+  document.getElementById('kpi-top-sub').textContent=topVenue?topVenue.name:'';
+  document.getElementById('kpi-wait').textContent=waitPct+'%';
+  document.getElementById('kpi-price-m').textContent=pricePct+'%';
+
+  // Hector's bar
+  document.getElementById('hb-rating').textContent=hAvg?hAvg+'★':'—';
+  document.getElementById('hb-reviews').textContent=hRevs.length;
+  document.getElementById('hb-pos').textContent=hPos+'%';
+  document.getElementById('hb-wait').textContent=hWait+'%';
+  document.getElementById('hb-locations').textContent=hLocs;
+
+  renderTable(venues, hAvg);
+  renderBubble(venues, hvm);
+  renderBar(venues, hAvg);
+  renderSentiment(data);
+  renderMentions(data, hRevs);
+  renderPriceDist(venues);
+  renderFeed(data);
+}
+
+// ── LEADERBOARD TABLE ──
+function renderTable(venues, hAvg){
+  const tb=document.getElementById('comp-tbody');
+  const sorted=[...venues].sort((a,b)=>b.venue_rating-a.venue_rating);
+  const maxR=Math.max(...sorted.map(v=>v.venue_rating),5);
+
+  tb.innerHTML=sorted.map(v=>{
+    const pct=(v.venue_rating/maxR*100).toFixed(0);
+    const col=v.venue_rating>=4.5?'var(--green)':v.venue_rating>=4.0?'var(--amber)':'var(--red)';
+    const cc=CATCHMENT_CLASSES[v.catchment]||'cp-carlton';
+    const priceClass=v.price_level?'p'+v.price_level:'';
+
+    return `<tr>
+      <td><div class="comp-name">${esc(v.name)}</div><div class="comp-catchment">${esc(v.address.split(',')[0])}</div></td>
+      <td>
+        <div class="rbar-wrap">
+          <span class="rating-num" style="color:${col}">${v.venue_rating}</span>
+          <span class="star">★</span>
+          <div class="rbar-track"><div class="rbar-fill" style="width:${pct}%;background:${col}"></div></div>
+        </div>
+      </td>
+      <td style="font-family:'Space Mono',monospace;font-size:0.78rem">${v.venue_reviews.toLocaleString()}</td>
+      <td><span class="price-badge ${priceClass}">${v.price_label}</span></td>
+      <td><span class="hours-tag">${_hoursShort(v.reviews[0])}</span></td>
+      <td><span class="catchment-pill ${cc}">${esc(v.catchment)}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function _hoursShort(r){
+  // Rough hours from the data — we stored open_from/open_until in venue CSV
+  // Fall back to "7am–3pm" as default for this segment
+  return r&&r.open_from&&r.open_until?`${r.open_from}–${r.open_until}`:'—';
+}
+
+// ── BUBBLE CHART ──
+function renderBubble(compVenues, hvm){
+  const compPts=compVenues.map(v=>({
+    x:v.venue_reviews,y:v.venue_rating,
+    r:Math.max(5,Math.min(22,Math.sqrt(v.reviews.length)*3)),
+    label:v.name,isHectors:false,
+  }));
+  const hPts=Object.values(hvm).map(v=>({
+    x:v.venue_reviews,y:v.venue_rating,
+    r:Math.max(5,Math.min(22,Math.sqrt(v.reviews.length)*3.5)),
+    label:'⬤ '+v.name,isHectors:true,
+  }));
+
+  const datasets=[
+    {label:'Competitors',data:compPts,backgroundColor:'rgba(74,158,255,0.35)',borderColor:'rgba(74,158,255,0.7)',borderWidth:1.5},
+    {label:"Hector's",data:hPts,backgroundColor:'rgba(215,15,0,0.45)',borderColor:'rgba(215,15,0,0.9)',borderWidth:2},
+  ];
+
+  if(bubbleChart){bubbleChart.data.datasets=datasets;bubbleChart.update();return}
+  bubbleChart=new Chart(document.getElementById('bubbleChart'),{
+    type:'bubble',
+    data:{datasets},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      scales:{
+        x:{title:{display:true,text:'Total Google Reviews',color:'#666',font:{size:10}},
+           ticks:{color:'#666',font:{size:9}},grid:{color:'#1C1C1C'}},
+        y:{title:{display:true,text:'Google Rating',color:'#666',font:{size:10}},
+           min:3.5,max:5.1,ticks:{color:'#666',font:{size:9}},grid:{color:'#1C1C1C'}},
+      },
+      plugins:{
+        legend:{labels:{usePointStyle:true,pointStyleWidth:8,padding:12,font:{size:11},color:'#A0A0A0'}},
+        tooltip:{callbacks:{label:ctx=>{const d=ctx.raw;return`${d.label}: ${d.y}★ (${d.x} reviews)`}}},
+      },
+    },
+  });
+}
+
+// ── BAR CHART ──
+function renderBar(venues, hAvg){
+  const sorted=[...venues].sort((a,b)=>b.venue_rating-a.venue_rating).slice(0,16);
+  const labels=sorted.map(v=>v.name.length>18?v.name.slice(0,16)+'…':v.name);
+  const vals=sorted.map(v=>v.venue_rating);
+  const colors=sorted.map(v=>v.venue_rating>=4.5?'rgba(46,204,64,0.7)':v.venue_rating>=4.0?'rgba(255,220,0,0.7)':'rgba(215,15,0,0.7)');
+
+  const datasets=[
+    {label:'Competitor Rating',data:vals,backgroundColor:colors,borderWidth:0,borderRadius:3},
+  ];
+  if(hAvg){
+    datasets.push({type:'line',label:"Hector's Avg",data:Array(sorted.length).fill(parseFloat(hAvg)),
+      borderColor:'var(--red)',borderWidth:2,borderDash:[6,3],pointRadius:0,tension:0,fill:false});
+  }
+
+  if(barChart){barChart.data.labels=labels;barChart.data.datasets=datasets;barChart.update();return}
+  barChart=new Chart(document.getElementById('barChart'),{
+    type:'bar',data:{labels,datasets},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      scales:{
+        y:{min:3,max:5.1,grid:{color:'#1C1C1C'},ticks:{font:{size:9},color:'#666'}},
+        x:{grid:{display:false},ticks:{font:{size:9},color:'#666',maxRotation:35}},
+      },
+      plugins:{
+        legend:{labels:{usePointStyle:true,pointStyleWidth:8,padding:12,font:{size:11},color:'#A0A0A0'}},
+        tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.raw+'★'}},
+      },
+    },
+  });
+}
+
+// ── SENTIMENT ──
+function renderSentiment(data){
+  const sc={Positive:0,Neutral:0,Negative:0};
+  data.forEach(r=>sc[r.sentiment]++);
+  if(sentChart){sentChart.data.datasets[0].data=[sc.Positive,sc.Neutral,sc.Negative];sentChart.update();return}
+  sentChart=new Chart(document.getElementById('sentChart'),{
+    type:'doughnut',
+    data:{labels:['Positive','Neutral','Negative'],datasets:[{
+      data:[sc.Positive,sc.Neutral,sc.Negative],
+      backgroundColor:['#2ECC40','#444','#D70F00'],borderWidth:0,hoverOffset:4,
+    }]},
+    options:{cutout:'62%',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{padding:14,usePointStyle:true,pointStyleWidth:8,font:{size:11},color:'#A0A0A0'}}}},
+  });
+}
+
+// ── MENTION BARS ──
+function renderMentions(compData, hData){
+  const el=document.getElementById('mention-bars');
+  const n=compData.length||1, hn=hData.length||1;
+
+  const rows=[
+    {label:'Wait / Queue',
+     comp:Math.round(compData.filter(r=>r.mentions_wait).length/n*100),
+     hec:Math.round(hData.filter(r=>r.mentions_wait).length/hn*100),
+     col:'var(--amber)'},
+    {label:'Price / Value',
+     comp:Math.round(compData.filter(r=>r.mentions_price).length/n*100),
+     hec:null,col:'var(--purple)'},
+    {label:'Service',
+     comp:Math.round(compData.filter(r=>r.mentions_service).length/n*100),
+     hec:null,col:'var(--blue)'},
+  ];
+
+  el.innerHTML=rows.map(row=>`
+    <div style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+        <span style="font-size:0.75rem;color:var(--ink-soft);font-weight:600">${row.label}</span>
+        <span style="font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--ink-muted)">
+          Comp: <strong style="color:${row.col}">${row.comp}%</strong>
+          ${row.hec!=null?` &nbsp;|&nbsp; Hectors: <strong style="color:var(--red)">${row.hec}%</strong>`:''}
+        </span>
+      </div>
+      <div class="mention-bar"><div class="mention-fill" style="width:${row.comp}%;background:${row.col};opacity:0.7"></div></div>
+      ${row.hec!=null?`<div class="mention-bar" style="margin-top:4px"><div class="mention-fill" style="width:${row.hec}%;background:var(--red);opacity:0.5"></div></div>`:''}
+    </div>
+  `).join('');
+}
+
+// ── PRICE DISTRIBUTION ──
+function renderPriceDist(venues){
+  const el=document.getElementById('price-dist');
+  const counts={null:0,1:0,2:0,3:0,4:0};
+  venues.forEach(v=>counts[v.price_level]=(counts[v.price_level]||0)+1);
+  const labels={null:'Not listed',1:'$ Budget',2:'$$ Mid',3:'$$$ Premium',4:'$$$$ Luxury'};
+  const colors={null:'var(--ink-muted)',1:'var(--green)',2:'var(--amber)',3:'var(--red)',4:'var(--purple)'};
+  const total=venues.length||1;
+  el.innerHTML=Object.entries(counts).filter(([,c])=>c>0).map(([k,c])=>`
+    <div class="mention-row">
+      <span class="mention-label">${labels[k]||k}</span>
+      <div class="mention-bar"><div class="mention-fill" style="width:${(c/total*100).toFixed(0)}%;background:${colors[k]||'#666'}"></div></div>
+      <span class="mention-pct">${c}</span>
+    </div>
+  `).join('');
+}
+
+// ── REVIEW FEED ──
+function renderFeed(allData){
+  const feedEl=document.getElementById('review-feed');
+  let d=[...allData];
+
+  // Filter
+  if(activeFilter==='Positive')d=d.filter(r=>r.sentiment==='Positive');
+  else if(activeFilter==='Negative')d=d.filter(r=>r.sentiment==='Negative');
+  else if(activeFilter==='Neutral')d=d.filter(r=>r.sentiment==='Neutral');
+  else if(activeFilter==='wait')d=d.filter(r=>r.mentions_wait);
+  else if(activeFilter==='price')d=d.filter(r=>r.mentions_price);
+
+  // Sort
+  switch(activeSort){
+    case 'newest':  d.sort((a,b)=>b.review_date.localeCompare(a.review_date));break;
+    case 'oldest':  d.sort((a,b)=>a.review_date.localeCompare(b.review_date));break;
+    case 'rating-high': d.sort((a,b)=>b.rating-a.rating||b.review_date.localeCompare(a.review_date));break;
+    case 'rating-low':  d.sort((a,b)=>a.rating-b.rating||b.review_date.localeCompare(a.review_date));break;
+    case 'sentiment': d.sort((a,b)=>a.sentiment_score-b.sentiment_score);break;
+  }
+
+  if(!d.length){feedEl.innerHTML='<div class="empty-msg">No reviews match.</div>';return}
+  const visible=d.slice(0,showCount);
+  const remaining=d.length-showCount;
+
+  feedEl.innerHTML=visible.map(r=>{
+    const st='★'.repeat(r.rating)+'☆'.repeat(5-r.rating);
+    const cl=r.sentiment==='Positive'?'pos':r.sentiment==='Negative'?'neg':'neu';
+    const cc=CATCHMENT_CLASSES[r.catchment]||'cp-carlton';
+    const mtags=[
+      r.mentions_wait?'<span class="mtag wait">⏱ wait</span>':'',
+      r.mentions_price?'<span class="mtag price">$ price</span>':'',
+      r.mentions_service?'<span class="mtag service">★ service</span>':'',
+    ].filter(Boolean).join(' ');
+    return `<div class="rev-card">
+      <div class="rev-header"><span class="rev-author">${esc(r.reviewer)}</span><span class="rev-stars">${st}</span></div>
+      <div class="rev-meta">
+        <span style="font-weight:600">${esc(r.name)}</span>
+        <span class="catchment-pill ${cc}">${esc(r.catchment)}</span>
+        <span>${r.review_date}</span>
+        <span class="stag ${cl}">${r.sentiment}</span>
+        ${mtags}
+        ${r.price_in_review?`<span style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--purple)">$${r.price_in_review} mentioned</span>`:''}
+      </div>
+      ${r.comment?`<div class="rev-comment">${esc(r.comment)}</div>`:''}
+    </div>`;
+  }).join('')
+  +(remaining>0?`<button class="show-more-btn" id="smb">Show More (${remaining} remaining)</button>`:'');
+
+  const smb=document.getElementById('smb');
+  if(smb)smb.addEventListener('click',()=>{showCount+=15;renderFeed(filt())});
+}
+
+// ── EVENTS ──
+document.getElementById('filter-pills').addEventListener('click',e=>{
+  const b=e.target.closest('.pill');if(!b)return;
+  document.querySelectorAll('#filter-pills .pill').forEach(p=>p.classList.remove('active'));
+  b.classList.add('active');activeFilter=b.dataset.filter;showCount=15;
+  renderFeed(filt());
+});
+document.getElementById('sort-select').addEventListener('change',e=>{
+  activeSort=e.target.value;showCount=15;renderFeed(filt());
+});
+
+loadData();
+</script>
+</body>
+</html>
