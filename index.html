@@ -68,21 +68,47 @@
   .rank-bar-wrap{display:flex;align-items:center;gap:6px}
   .rank-bar{height:6px;border-radius:3px;transition:width 0.5s}
   .rank-score{font-family:'Space Mono',monospace;font-weight:700;font-size:0.75rem;min-width:36px}
-  .rating-bars{display:flex;flex-direction:column;gap:6px}
-  .rating-bar-row{display:grid;grid-template-columns:28px 1fr 30px;align-items:center;gap:8px;font-size:0.78rem}
-  .rating-bar-row .label{font-family:'Space Mono',monospace;font-weight:700;font-size:0.72rem;color:var(--ink-muted);display:flex;align-items:center;gap:1px}
-  .bar-track{height:16px;background:var(--surface-2);border-radius:3px;overflow:hidden;border:1px solid var(--border)}
+  /* DATE RANGE SELECTOR */
+  .date-bar{display:flex;gap:6px;margin-bottom:28px;flex-wrap:wrap;align-items:center}
+  .date-bar-label{font-family:'Space Mono',monospace;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-muted);margin-right:8px}
+  .date-btn{font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;padding:6px 14px;border:1px solid var(--border);border-radius:4px;background:var(--surface);color:var(--ink-muted);cursor:pointer;transition:all 0.15s;white-space:nowrap;text-transform:uppercase;letter-spacing:0.04em}
+  .date-btn:hover{border-color:var(--ink-muted);color:var(--ink-soft);background:var(--surface-2)}
+  .date-btn.active{background:var(--red);color:#fff;border-color:var(--red)}
+  .date-sep{width:1px;height:24px;background:var(--border);margin:0 4px;align-self:center}
+  .date-range-wrap{display:flex;align-items:center;gap:6px}
+  .date-range-label{font-family:'Space Mono',monospace;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-muted)}
+  .date-input{font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:500;padding:5px 10px;border:1px solid var(--border);border-radius:4px;background:var(--surface);color:var(--ink);cursor:pointer;transition:border-color 0.15s}
+  .date-input:focus{outline:none;border-color:var(--red)}
+  .date-input.custom-active{border-color:var(--red);background:#FFF8F7}
+
+  /* HORIZONTAL INSIGHTS ROW */
+  .insights-row{display:grid;grid-template-columns:180px 1fr 1fr 160px;gap:0;margin-bottom:28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .insights-col{padding:20px;border-right:1px solid var(--border)}
+  .insights-col:last-child{border-right:none}
+  .insights-col-title{font-family:'Space Mono',monospace;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-muted);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+
+  /* RATINGS BARS (compact horizontal layout) */
+  .rating-bars{display:flex;flex-direction:column;gap:5px}
+  .rating-bar-row{display:grid;grid-template-columns:20px 1fr 22px;align-items:center;gap:6px;font-size:0.78rem}
+  .rating-bar-row .label{font-family:'Space Mono',monospace;font-weight:700;font-size:0.68rem;color:var(--ink-muted);display:flex;align-items:center;gap:1px}
+  .bar-track{height:12px;background:var(--surface-2);border-radius:3px;overflow:hidden;border:1px solid var(--border)}
   .bar-fill{height:100%;border-radius:3px;transition:width 0.5s cubic-bezier(0.22,1,0.36,1)}
   .bar-fill.r5{background:#1A7A2E}.bar-fill.r4{background:#4A9A5C}.bar-fill.r3{background:#C08000}.bar-fill.r2{background:#D45A00}.bar-fill.r1{background:var(--red)}
-  .keyword-cloud{display:flex;flex-wrap:wrap;gap:6px}
-  .kw-pill{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:3px;font-size:0.72rem;font-weight:600}
-  .kw-pill .kw-c{font-family:'Space Mono',monospace;font-size:0.6rem;font-weight:700;opacity:0.6}
-  .kw-pill.pos-kw{background:var(--green-light);color:var(--green)} .kw-pill.neg-kw{background:var(--red-light);color:var(--red)}
-  .mention-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-  .mention-label{font-size:0.72rem;color:var(--ink-soft);width:100px;flex-shrink:0;font-weight:500}
-  .mention-track{flex:1;height:12px;background:var(--surface-2);border-radius:3px;overflow:hidden;border:1px solid var(--border)}
+  .rating-bar-row .count{font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--ink-muted);text-align:right}
+
+  /* KEYWORDS (horizontal wrap) */
+  .keyword-cloud{display:flex;flex-wrap:wrap;gap:5px}
+  .kw-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:3px;font-size:0.7rem;font-weight:600}
+  .kw-pill .kw-c{font-family:'Space Mono',monospace;font-size:0.58rem;font-weight:700;opacity:0.6}
+  .kw-pill.pos-kw{background:var(--green-light);color:var(--green)}
+  .kw-pill.neg-kw{background:var(--red-light);color:var(--red)}
+
+  /* THEMES */
+  .mention-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .mention-label{font-size:0.7rem;color:var(--ink-soft);width:88px;flex-shrink:0;font-weight:500}
+  .mention-track{flex:1;height:10px;background:var(--surface-2);border-radius:3px;overflow:hidden;border:1px solid var(--border)}
   .mention-fill{height:100%;border-radius:3px;transition:width 0.6s}
-  .mention-pct{font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--ink-muted);width:36px;text-align:right}
+  .mention-pct{font-family:'Space Mono',monospace;font-size:0.63rem;color:var(--ink-muted);width:30px;text-align:right}
   .review-feed{display:flex;flex-direction:column}
   .review-item{padding:14px 0;border-bottom:1px solid var(--border)}
   .review-item:last-child{border-bottom:none}
@@ -110,7 +136,8 @@
   .sort-select:focus{outline:none;border-color:var(--red)}
   .show-more-btn{display:block;width:100%;font-family:'Inter',sans-serif;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:12px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--ink-muted);cursor:pointer;transition:all 0.15s;margin-top:8px}
   .show-more-btn:hover{border-color:var(--red);color:var(--red)}
-  @media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr)}.grid-2,.grid-3{grid-template-columns:1fr}header{flex-direction:column;align-items:flex-start;gap:10px}.header-meta{text-align:left}.brand h1{font-size:1.3rem}}
+  @media(max-width:1100px){.insights-row{grid-template-columns:1fr 1fr;}.insights-col{border-bottom:1px solid var(--border)}.insights-col:nth-child(even){border-right:none}}
+  @media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}.insights-row{grid-template-columns:1fr}.insights-col{border-right:none;border-bottom:1px solid var(--border)}.insights-col:last-child{border-bottom:none}header{flex-direction:column;align-items:flex-start;gap:10px}.header-meta{text-align:left}.brand h1{font-size:1.3rem}}
   @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
   .kpi,.card{animation:fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both}
   .kpi:nth-child(1){animation-delay:.03s}.kpi:nth-child(2){animation-delay:.06s}.kpi:nth-child(3){animation-delay:.09s}.kpi:nth-child(4){animation-delay:.12s}.kpi:nth-child(5){animation-delay:.15s}
@@ -136,6 +163,21 @@
   </header>
 
   <div class="location-bar" id="location-bar"><span class="location-bar-label">Location</span></div>
+  <div class="date-bar" id="date-bar">
+    <span class="date-bar-label">Period</span>
+    <button class="date-btn active" data-days="7">7 Days</button>
+    <button class="date-btn" data-days="14">14 Days</button>
+    <button class="date-btn" data-days="30">30 Days</button>
+    <button class="date-btn" data-days="90">90 Days</button>
+    <button class="date-btn" data-days="0">All Time</button>
+    <div class="date-sep"></div>
+    <div class="date-range-wrap">
+      <span class="date-range-label">From</span>
+      <input type="date" class="date-input" id="date-from">
+      <span class="date-range-label">To</span>
+      <input type="date" class="date-input" id="date-to">
+    </div>
+  </div>
 
   <div class="kpi-row">
     <div class="kpi"><div class="kpi-label">Avg Rating</div><div class="kpi-value" id="kpi-avg">—</div><div class="kpi-sub" id="kpi-avg-sub"></div></div>
@@ -150,11 +192,23 @@
     <div class="card"><div class="card-title">Sentiment</div><div class="chart-wrap"><canvas id="sentimentChart" height="180"></canvas></div></div>
   </div>
 
-  <div class="grid-3" style="grid-template-columns:1fr 1fr 1fr 1fr">
-    <div class="card"><div class="card-title">Ratings</div><div class="rating-bars" id="rating-bars"></div></div>
-    <div class="card"><div class="card-title">Top Keywords — Positive</div><div class="keyword-cloud" id="kw-pos"></div></div>
-    <div class="card"><div class="card-title">Top Keywords — Negative</div><div class="keyword-cloud" id="kw-neg"></div></div>
-    <div class="card"><div class="card-title">Review Themes</div><div id="theme-mentions"></div></div>
+  <div class="insights-row">
+    <div class="insights-col">
+      <div class="insights-col-title">Ratings</div>
+      <div class="rating-bars" id="rating-bars"></div>
+    </div>
+    <div class="insights-col">
+      <div class="insights-col-title">Top Keywords — Positive</div>
+      <div class="keyword-cloud" id="kw-pos"></div>
+    </div>
+    <div class="insights-col">
+      <div class="insights-col-title">Top Keywords — Negative</div>
+      <div class="keyword-cloud" id="kw-neg"></div>
+    </div>
+    <div class="insights-col">
+      <div class="insights-col-title">Review Themes</div>
+      <div id="theme-mentions"></div>
+    </div>
   </div>
 
   <div class="card" style="margin-bottom:28px">
@@ -169,7 +223,6 @@
     <div class="feed-controls">
       <div class="filter-bar" id="filter-bar">
         <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="flagged">Needs Attention</button>
         <button class="filter-btn" data-filter="Positive">Positive</button>
         <button class="filter-btn" data-filter="Neutral">Neutral</button>
         <button class="filter-btn" data-filter="Negative">Negative</button>
@@ -192,7 +245,7 @@ const CSV_URL='./google_reviews.csv';
 const SNAPSHOT=[{"venue":"Hector's Bakery","place_id":"ChIJ5SiiPaVD1moReQEViHlGa-g","address":"33 Stewart St, Richmond VIC 3121","venue_rating":4.3,"venue_reviews":168,"reviewer":"Mick K","rating":5,"comment":"Great location. Right next to Richmond station. Awesome vibe inside and very friendly staff.","review_date":"2026-03-12","sentiment":"Positive","sentiment_score":0.482},{"venue":"Hector's Bakery","place_id":"ChIJ5SiiPaVD1moReQEViHlGa-g","address":"33 Stewart St, Richmond VIC 3121","venue_rating":4.3,"venue_reviews":167,"reviewer":"gus c","rating":5,"comment":"Cookie Monster, delicious baked goods. Always busy but friendly.","review_date":"2026-03-09","sentiment":"Positive","sentiment_score":0.492},{"venue":"Hector's Bakery","place_id":"ChIJ5SiiPaVD1moReQEViHlGa-g","address":"33 Stewart St, Richmond VIC 3121","venue_rating":4.3,"venue_reviews":167,"reviewer":"Lena Mishra","rating":5,"comment":"","review_date":"2026-03-02","sentiment":"Neutral","sentiment_score":0.0},{"venue":"Hector's Deli","place_id":"ChIJyT_pbABD1moRDAP0Mbql6QI","address":"61 Little Collins St, Melbourne VIC 3000","venue_rating":4.5,"venue_reviews":463,"reviewer":"alex jam gold","rating":5,"comment":"Small sandwich shop, but delivered a huge service. Everything was fresh and delicious.","review_date":"2026-03-12","sentiment":"Positive","sentiment_score":0.264},{"venue":"Hector's Deli","place_id":"ChIJZ_w0Oupn1moRyYfWpkBnSCA","address":"253 Coventry St, South Melbourne VIC 3205","venue_rating":4.4,"venue_reviews":928,"reviewer":"Jamal Rawal","rating":5,"comment":"Apple turnover, was like an apple pie and custard in a croissant. Literally the best sweet I have ever eaten.","review_date":"2026-03-11","sentiment":"Positive","sentiment_score":0.286},{"venue":"Hector's Deli","place_id":"ChIJtVdgmvhC1moROxwhKPwolNQ","address":"1/94 Buckingham St, Richmond VIC 3121","venue_rating":4.6,"venue_reviews":1345,"reviewer":"David Chung","rating":1,"comment":"Got charged $10.20 for a donut. Public holiday surcharge. Original price was $6.00.","review_date":"2026-03-09","sentiment":"Neutral","sentiment_score":0.094},{"venue":"Hector's Deli","place_id":"ChIJ02xRi2JD1moRJQh-pBNsBeI","address":"111 Moor St, Fitzroy VIC 3065","venue_rating":4.5,"venue_reviews":690,"reviewer":"Pete Ft","rating":4,"comment":"","review_date":"2026-03-09","sentiment":"Neutral","sentiment_score":0.0},{"venue":"Hector's Deli (Normanby Chambers)","place_id":"ChIJk6x1KsRd1moRVm9PGDgSzNc","address":"430 Little Collins St, Melbourne VIC 3000","venue_rating":4.7,"venue_reviews":47,"reviewer":"Rachel de Sousa","rating":5,"comment":"Absolutely awesome staff. Best food and coffee in town.","review_date":"2026-02-10","sentiment":"Positive","sentiment_score":0.787}];
 
 const VENUE_NAMES={"ChIJZ_w0Oupn1moRyYfWpkBnSCA":"South Melbourne","ChIJtVdgmvhC1moROxwhKPwolNQ":"Richmond OG","ChIJ02xRi2JD1moRJQh-pBNsBeI":"Fitzroy","ChIJk6x1KsRd1moRVm9PGDgSzNc":"Normanby Chambers","ChIJyT_pbABD1moRDAP0Mbql6QI":"Little Collins OG","ChIJ5SiiPaVD1moReQEViHlGa-g":"The Bakery","ChIJqdHsOp9D1moRtBJ17g-tCVY":"Kiosk"};
-let DATA=[],allVenueMap={},allAddresses=[],isLive=false,activeLoc='all',activeSent='all',sChart=null,tChart=null;
+let DATA=[],allVenueMap={},allAddresses=[],isLive=false,activeLoc='all',activeSent='all',activeDays=7,customFrom='',customTo='',sChart=null,tChart=null;
 const escH=s=>{const d=document.createElement('div');d.textContent=s;return d.innerHTML};
 function toggleComment(el,btn){if(!el)return;el.classList.toggle('expanded');if(!btn)btn=el.nextElementSibling;if(btn&&btn.classList.contains('show-more-btn-inline'))btn.textContent=el.classList.contains('expanded')?'Show less':'Show more';}
 const buildVM=d=>{const m={};d.forEach(r=>{if(!m[r.address])m[r.address]={venue:r.venue,address:r.address,place_id:r.place_id,venue_rating:r.venue_rating,venue_reviews:r.venue_reviews,reviews:[]};m[r.address].reviews.push(r)});return m};
@@ -200,7 +253,18 @@ const normD=r=>{if(!r)return'';r=r.trim();if(/^\d{4}-\d{2}-\d{2}/.test(r))return
 const normS=s=>{if(!s)return'Neutral';const c=s.trim().charAt(0).toUpperCase()+s.trim().slice(1).toLowerCase();return['Positive','Negative','Neutral'].includes(c)?c:'Neutral'};
 const parseC=t=>Papa.parse(t,{header:true,skipEmptyLines:true}).data.map(r=>({place_id:(r.place_id||'').trim(),venue:(r.venue||'').trim(),address:(r.address||'').trim(),venue_rating:parseFloat(r.venue_rating)||0,venue_reviews:parseInt(r.venue_reviews)||0,reviewer:(r.reviewer||'').trim(),rating:parseInt(r.rating)||0,comment:(r.comment||'').trim(),review_date:normD(r.review_date),sentiment:normS(r.sentiment),sentiment_score:parseFloat(r.sentiment_score)||0})).filter(r=>r.address&&r.rating>0&&r.rating<=5);
 const locName=addr=>{const v=allVenueMap[addr];if(v&&v.place_id&&VENUE_NAMES[v.place_id])return VENUE_NAMES[v.place_id];return addr.split(',')[0]};
-const filt=()=>activeLoc==='all'?DATA:DATA.filter(r=>r.address===activeLoc);
+const filt=()=>{
+  let d=activeLoc==='all'?DATA:DATA.filter(r=>r.address===activeLoc);
+  if(customFrom||customTo){
+    if(customFrom)d=d.filter(r=>r.review_date>=customFrom);
+    if(customTo)d=d.filter(r=>r.review_date<=customTo);
+  } else if(activeDays>0){
+    const cutoff=new Date();cutoff.setDate(cutoff.getDate()-activeDays);
+    const cs=cutoff.toISOString().slice(0,10);
+    d=d.filter(r=>r.review_date>=cs);
+  }
+  return d;
+};
 const isFlag=r=>r.rating<=2;
 const getWS=d=>{const dt=new Date(d+'T00:00:00');const dy=dt.getDay();dt.setDate(dt.getDate()-dy+(dy===0?-6:1));return dt.toISOString().slice(0,10)};
 const weeksAgo=n=>{const d=new Date();d.setDate(d.getDate()-n*7);const dy=d.getDay();d.setDate(d.getDate()-dy+(dy===0?-6:1));return d.toISOString().slice(0,10)};
@@ -215,6 +279,17 @@ function boot(){allVenueMap=buildVM(DATA);allAddresses=Object.keys(allVenueMap).
 const locBar=document.getElementById('location-bar');
 function renderLB(){locBar.innerHTML='<span class="location-bar-label">Location</span>';const mk=(l,k,c)=>{const b=document.createElement('button');b.className='loc-btn'+(activeLoc===k?' active':'');b.dataset.loc=k;b.innerHTML=escH(l)+'<span class="rc">'+c+'</span>';locBar.appendChild(b)};mk('All','all',DATA.length);allAddresses.forEach(a=>mk(locName(a),a,allVenueMap[a].reviews.length))}
 locBar.addEventListener('click',e=>{const b=e.target.closest('.loc-btn');if(!b)return;activeLoc=b.dataset.loc;showCount=10;renderAll()});
+document.getElementById('date-bar').addEventListener('click',e=>{const b=e.target.closest('.date-btn');if(!b)return;activeDays=parseInt(b.dataset.days);customFrom='';customTo='';document.getElementById('date-from').value='';document.getElementById('date-to').value='';document.querySelectorAll('.date-btn').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.date-input').forEach(x=>x.classList.remove('custom-active'));showCount=10;renderAll()});
+function onDateInput(){
+  customFrom=document.getElementById('date-from').value;
+  customTo=document.getElementById('date-to').value;
+  const hasCustom=customFrom||customTo;
+  document.querySelectorAll('.date-btn').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.date-input').forEach(x=>x.classList.toggle('custom-active',hasCustom));
+  showCount=10;renderAll();
+}
+document.getElementById('date-from').addEventListener('change',onDateInput);
+document.getElementById('date-to').addEventListener('change',onDateInput);
 document.getElementById('venue-tbody').addEventListener('click',e=>{const tr=e.target.closest('tr');if(!tr||!tr.dataset.addr)return;activeLoc=activeLoc===tr.dataset.addr?'all':tr.dataset.addr;showCount=10;renderAll()});
 Chart.defaults.color='#888888';Chart.defaults.borderColor='#E2E2DF';Chart.defaults.font.family="'Inter'";
 function renderAll(){
