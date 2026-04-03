@@ -9,14 +9,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:#0A0A0A; --surface:#141414; --surface-2:#1C1C1C; --surface-3:#242424;
-    --ink:#F5F5F5; --ink-soft:#A0A0A0; --ink-muted:#666;
-    --red:#D70F00; --red-dark:#9B0A00; --red-light:rgba(215,15,0,0.12);
-    --green:#2ECC40; --green-light:rgba(46,204,64,0.12);
-    --amber:#FFDC00; --amber-light:rgba(255,220,0,0.12);
-    --blue:#4A9EFF; --blue-light:rgba(74,158,255,0.12);
-    --purple:#A855F7; --purple-light:rgba(168,85,247,0.12);
-    --border:#2A2A2A; --radius:8px;
+    --bg:#F4F4F2; --surface:#FFFFFF; --surface-2:#F0F0EE; --surface-3:#EAEAE8;
+    --ink:#111111; --ink-soft:#444444; --ink-muted:#888888;
+    --red:#D70F00; --red-dark:#9B0A00; --red-light:rgba(215,15,0,0.08);
+    --green:#1A7A2E; --green-light:rgba(26,122,46,0.10);
+    --amber:#A06000; --amber-light:rgba(160,96,0,0.10);
+    --blue:#1B5EA8; --blue-light:rgba(27,94,168,0.10);
+    --purple:#6B35A8; --purple-light:rgba(107,53,168,0.10);
+    --border:#E2E2DF; --radius:8px; --shadow:0 1px 4px rgba(0,0,0,0.08);
     --hectors:#D70F00;
   }
   *{margin:0;padding:0;box-sizing:border-box}
@@ -40,13 +40,13 @@
   .toolbar{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap;align-items:center}
   .toolbar-label{font-family:'Space Mono',monospace;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-muted);margin-right:4px}
   .pill{font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;padding:6px 14px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--ink-muted);cursor:pointer;transition:all 0.15s;white-space:nowrap;text-transform:uppercase;letter-spacing:0.04em}
-  .pill:hover{border-color:var(--ink-muted);color:var(--ink-soft)}
+  .pill:hover{border-color:var(--ink-muted);color:var(--ink-soft);background:var(--surface-2)}
   .pill.active{background:var(--red);color:#fff;border-color:var(--red)}
   .toolbar-sep{width:1px;height:24px;background:var(--border);margin:0 4px}
 
   /* KPI ROW */
   .kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:28px}
-  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;animation:fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both}
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);animation:fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both}
   .kpi:nth-child(1){animation-delay:.03s}.kpi:nth-child(2){animation-delay:.06s}
   .kpi:nth-child(3){animation-delay:.09s}.kpi:nth-child(4){animation-delay:.12s}
   .kpi:nth-child(5){animation-delay:.15s}.kpi:nth-child(6){animation-delay:.18s}
@@ -56,9 +56,9 @@
   .v-green{color:var(--green)} .v-red{color:var(--red)} .v-amber{color:var(--amber)} .v-blue{color:var(--blue)}
 
   /* HECTOR'S HIGHLIGHT BAR */
-  .hectors-bar{display:flex;gap:12px;margin-bottom:28px;padding:16px 20px;background:var(--red-light);border:1px solid rgba(215,15,0,0.25);border-radius:var(--radius);align-items:center;flex-wrap:wrap}
+  .hectors-bar{display:flex;gap:12px;margin-bottom:28px;padding:16px 20px;background:var(--red-light);border:1px solid rgba(215,15,0,0.18);border-radius:var(--radius);align-items:center;flex-wrap:wrap}
   .hectors-bar-label{font-family:'Space Mono',monospace;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--red);white-space:nowrap}
-  .hectors-stat{display:flex;flex-direction:column;gap:2px;padding:0 16px;border-right:1px solid rgba(215,15,0,0.2)}
+  .hectors-stat{display:flex;flex-direction:column;gap:2px;padding:0 16px;border-right:1px solid rgba(215,15,0,0.15)}
   .hectors-stat:last-child{border-right:none}
   .hectors-stat-val{font-family:'Space Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--ink)}
   .hectors-stat-lbl{font-size:0.65rem;color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.06em}
@@ -67,7 +67,7 @@
   .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
   .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:28px}
   .grid-12{display:grid;grid-template-columns:1fr 2fr;gap:16px;margin-bottom:28px}
-  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;animation:fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);animation:fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both}
   .card-title{font-family:'Space Mono',monospace;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-muted);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border)}
 
   /* COMPETITOR TABLE */
@@ -80,12 +80,12 @@
   .comp-name{font-weight:700;color:var(--ink)}
   .comp-catchment{font-size:0.68rem;color:var(--ink-muted);margin-top:1px}
   .hectors-tag{display:inline-block;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:1px 5px;border-radius:3px;background:var(--red);color:#fff;margin-left:5px;vertical-align:middle}
-  .star{color:var(--amber)}
+  .star{color:#C08000}
   .rating-num{font-family:'Space Mono',monospace;font-weight:700;font-size:0.85rem}
 
   /* RATING BAR INLINE */
   .rbar-wrap{display:flex;align-items:center;gap:6px}
-  .rbar-track{flex:1;height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden;min-width:60px}
+  .rbar-track{flex:1;height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden;min-width:60px;border:1px solid var(--border)}
   .rbar-fill{height:100%;border-radius:4px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1)}
 
   /* PRICE BADGE */
@@ -101,18 +101,18 @@
   /* MENTION BARS */
   .mention-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
   .mention-label{font-size:0.72rem;color:var(--ink-soft);width:90px;flex-shrink:0}
-  .mention-bar{flex:1;height:12px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+  .mention-bar{flex:1;height:12px;background:var(--surface-2);border-radius:3px;overflow:hidden;border:1px solid var(--border)}
   .mention-fill{height:100%;border-radius:3px;transition:width 0.6s}
   .mention-pct{font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--ink-muted);width:36px;text-align:right}
 
   /* CATCHMENT PILLS */
   .catchment-pill{display:inline-block;font-size:0.62rem;font-weight:700;padding:2px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:0.06em}
-  .cp-smb{background:rgba(74,158,255,0.15);color:var(--blue)}
-  .cp-richmond{background:rgba(168,85,247,0.15);color:var(--purple)}
-  .cp-fitzroy{background:rgba(255,220,0,0.15);color:var(--amber)}
-  .cp-cbd{background:rgba(46,204,64,0.15);color:var(--green)}
-  .cp-sy{background:rgba(215,15,0,0.15);color:#FF6B6B}
-  .cp-carlton{background:rgba(255,255,255,0.1);color:var(--ink-muted)}
+  .cp-smb{background:rgba(27,94,168,0.12);color:var(--blue)}
+  .cp-richmond{background:rgba(107,53,168,0.12);color:var(--purple)}
+  .cp-fitzroy{background:rgba(160,96,0,0.12);color:var(--amber)}
+  .cp-cbd{background:rgba(26,122,46,0.12);color:var(--green)}
+  .cp-sy{background:rgba(215,15,0,0.10);color:var(--red)}
+  .cp-carlton{background:rgba(0,0,0,0.06);color:var(--ink-muted)}
 
   /* REVIEW CARDS */
   .rev-card{padding:12px 0;border-bottom:1px solid var(--border)}
@@ -125,7 +125,7 @@
 
   /* SORT/FILTER CONTROLS */
   .feed-controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px;flex-wrap:wrap}
-  .sort-select{font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;padding:5px 28px 5px 10px;border:1px solid var(--border);border-radius:4px;background:var(--surface-2);color:var(--ink-soft);cursor:pointer;text-transform:uppercase;letter-spacing:0.04em;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23666' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+  .sort-select{font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;padding:5px 28px 5px 10px;border:1px solid var(--border);border-radius:4px;background:var(--surface);color:var(--ink-soft);cursor:pointer;text-transform:uppercase;letter-spacing:0.04em;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23888' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
   .sort-select:focus{outline:none;border-color:var(--red)}
   .filter-pills{display:flex;gap:6px;flex-wrap:wrap}
   .show-more-btn{display:block;width:100%;font-family:'Inter',sans-serif;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:12px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--ink-muted);cursor:pointer;transition:all 0.15s;margin-top:8px}
@@ -135,7 +135,7 @@
   .stag{display:inline-flex;padding:2px 7px;border-radius:3px;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em}
   .stag.pos{background:var(--green-light);color:var(--green)}
   .stag.neg{background:var(--red-light);color:var(--red)}
-  .stag.neu{background:rgba(255,255,255,0.06);color:var(--ink-muted)}
+  .stag.neu{background:rgba(0,0,0,0.05);color:var(--ink-muted)}
 
   /* MENTION TAGS */
   .mtag{display:inline-flex;align-items:center;gap:3px;font-size:0.6rem;font-weight:700;padding:1px 5px;border-radius:3px;text-transform:uppercase;letter-spacing:0.04em}
@@ -207,7 +207,7 @@
   <div class="hectors-bar" id="hectors-bar">
     <span class="hectors-bar-label">⬤ Hector's Avg</span>
     <div class="hectors-stat"><span class="hectors-stat-val" id="hb-rating">—</span><span class="hectors-stat-lbl">Avg Rating</span></div>
-    <div class="hectors-stat"><span class="hectors-stat-val" id="hb-reviews">—</span><span class="hectors-stat-lbl">Total Reviews</span></div>
+    <div class="hectors-stat"><span class="hectors-stat-val" id="hb-reviews">—</span><span class="hectors-stat-lbl">Google Reviews</span></div>
     <div class="hectors-stat"><span class="hectors-stat-val" id="hb-pos">—</span><span class="hectors-stat-lbl">Positive %</span></div>
     <div class="hectors-stat"><span class="hectors-stat-val" id="hb-wait">—</span><span class="hectors-stat-lbl">Wait Mentions</span></div>
     <div class="hectors-stat"><span class="hectors-stat-val" id="hb-locations">—</span><span class="hectors-stat-lbl">Locations</span></div>
@@ -253,7 +253,7 @@
 
   <!-- RATING COMPARISON -->
   <div class="card" style="margin-bottom:28px">
-    <div class="card-title">Rating by Competitor — vs Hector's Average</div>
+    <div class="card-title">Rating by Competitor — vs Hector's Google Avg</div>
     <div class="chart-wrap"><canvas id="barChart" height="180"></canvas></div>
   </div>
 
@@ -315,8 +315,8 @@ const CATCHMENT_CLASSES = {
 let COMP_DATA=[], HECTOR_DATA=[], activeCatchment='all', activeFilter='all', activeSort='newest', showCount=15;
 let bubbleChart=null, sentChart=null, barChart=null;
 
-Chart.defaults.color='#666';
-Chart.defaults.borderColor='#2A2A2A';
+Chart.defaults.color='#888888';
+Chart.defaults.borderColor='#E2E2DF';
 Chart.defaults.font.family="'Inter'";
 
 const esc=s=>{const d=document.createElement('div');d.textContent=s;return d.innerHTML};
@@ -417,11 +417,14 @@ function buildVenueMap(data){
 
 // ── HECTOR VENUE MAP ──
 function buildHectorVenueMap(){
+  // Key on place_id (not name) to avoid duplicate venue entries if name varies.
+  // venue_rating = authoritative Google overall rating (reflects ALL reviews).
+  // venue_reviews = total Google review count (not just scraped rows).
   const m={};
   HECTOR_DATA.forEach(r=>{
     const n=HECTOR_NAMES[r.place_id]||r.venue;
-    if(!m[n])m[n]={name:n,place_id:r.place_id,venue_rating:r.venue_rating,venue_reviews:r.venue_reviews,reviews:[]};
-    m[n].reviews.push(r);
+    if(!m[r.place_id])m[r.place_id]={name:n,place_id:r.place_id,venue_rating:r.venue_rating,venue_reviews:r.venue_reviews,reviews:[]};
+    m[r.place_id].reviews.push(r);
   });
   return m;
 }
@@ -443,11 +446,18 @@ function renderAll(){
   const topVenue=venues.sort((a,b)=>b.venue_rating-a.venue_rating)[0];
 
   // Hector's agg
+  // hAvg uses venue_rating (Google overall ★ across ALL reviews) — NOT avg of scraped rows.
+  // Scraped rows are only the last ~5 per venue so they skew low and aren't comparable
+  // to competitor venue_rating values shown in the same table.
+  const hVenues=Object.values(hvm);
+  const hGoogleRatings=hVenues.map(v=>v.venue_rating).filter(Boolean);
+  const hAvg=hGoogleRatings.length?(hGoogleRatings.reduce((s,r)=>s+r,0)/hGoogleRatings.length).toFixed(2):null;
+  // Sum venue_reviews per unique location for total Google review count
+  const hTotalReviews=hVenues.reduce((s,v)=>s+(v.venue_reviews||0),0);
   const hRevs=HECTOR_DATA;
-  const hAvg=hRevs.length?(hRevs.reduce((s,r)=>s+r.rating,0)/hRevs.length).toFixed(2):null;
   const hPos=hRevs.length?Math.round(hRevs.filter(r=>r.sentiment==='Positive').length/hRevs.length*100):0;
   const hWait=hRevs.length?Math.round(hRevs.filter(r=>r.mentions_wait).length/hRevs.length*100):0;
-  const hLocs=Object.keys(hvm).length;
+  const hLocs=hVenues.length;
 
   const delta=mktAvg&&hAvg?(parseFloat(hAvg)-parseFloat(mktAvg)).toFixed(2):null;
   const waitPct=data.length?Math.round(data.filter(r=>r.mentions_wait).length/data.length*100):0;
@@ -457,7 +467,7 @@ function renderAll(){
   document.getElementById('kpi-mkt-avg').textContent=mktAvg||'—';
   document.getElementById('kpi-mkt-sub').textContent=data.length+' competitor reviews';
   document.getElementById('kpi-hec-avg').textContent=hAvg||'—';
-  document.getElementById('kpi-hec-sub').textContent=hRevs.length+' Hector\'s reviews';
+  document.getElementById('kpi-hec-sub').textContent='Google overall avg';
   const dEl=document.getElementById('kpi-delta');
   if(delta!=null){
     const pos=parseFloat(delta)>=0;
@@ -471,7 +481,7 @@ function renderAll(){
 
   // Hector's bar
   document.getElementById('hb-rating').textContent=hAvg?hAvg+'★':'—';
-  document.getElementById('hb-reviews').textContent=hRevs.length;
+  document.getElementById('hb-reviews').textContent=hTotalReviews.toLocaleString();
   document.getElementById('hb-pos').textContent=hPos+'%';
   document.getElementById('hb-wait').textContent=hWait+'%';
   document.getElementById('hb-locations').textContent=hLocs;
@@ -534,8 +544,8 @@ function renderBubble(compVenues, hvm){
   }));
 
   const datasets=[
-    {label:'Competitors',data:compPts,backgroundColor:'rgba(74,158,255,0.35)',borderColor:'rgba(74,158,255,0.7)',borderWidth:1.5},
-    {label:"Hector's",data:hPts,backgroundColor:'rgba(215,15,0,0.45)',borderColor:'rgba(215,15,0,0.9)',borderWidth:2},
+    {label:'Competitors',data:compPts,backgroundColor:'rgba(27,94,168,0.20)',borderColor:'rgba(27,94,168,0.55)',borderWidth:1.5},
+    {label:"Hector's",data:hPts,backgroundColor:'rgba(215,15,0,0.25)',borderColor:'rgba(215,15,0,0.75)',borderWidth:2},
   ];
 
   if(bubbleChart){bubbleChart.data.datasets=datasets;bubbleChart.update();return}
@@ -546,12 +556,12 @@ function renderBubble(compVenues, hvm){
       responsive:true,maintainAspectRatio:false,
       scales:{
         x:{title:{display:true,text:'Total Google Reviews',color:'#666',font:{size:10}},
-           ticks:{color:'#666',font:{size:9}},grid:{color:'#1C1C1C'}},
+           ticks:{color:'#666',font:{size:9}},grid:{color:'#EBEBEB'}},
         y:{title:{display:true,text:'Google Rating',color:'#666',font:{size:10}},
-           min:3.5,max:5.1,ticks:{color:'#666',font:{size:9}},grid:{color:'#1C1C1C'}},
+           min:3.5,max:5.1,ticks:{color:'#666',font:{size:9}},grid:{color:'#EBEBEB'}},
       },
       plugins:{
-        legend:{labels:{usePointStyle:true,pointStyleWidth:8,padding:12,font:{size:11},color:'#A0A0A0'}},
+        legend:{labels:{usePointStyle:true,pointStyleWidth:8,padding:12,font:{size:11},color:'#444444'}},
         tooltip:{callbacks:{label:ctx=>{const d=ctx.raw;return`${d.label}: ${d.y}★ (${d.x} reviews)`}}},
       },
     },
@@ -563,13 +573,13 @@ function renderBar(venues, hAvg){
   const sorted=[...venues].sort((a,b)=>b.venue_rating-a.venue_rating).slice(0,16);
   const labels=sorted.map(v=>v.name.length>18?v.name.slice(0,16)+'…':v.name);
   const vals=sorted.map(v=>v.venue_rating);
-  const colors=sorted.map(v=>v.venue_rating>=4.5?'rgba(46,204,64,0.7)':v.venue_rating>=4.0?'rgba(255,220,0,0.7)':'rgba(215,15,0,0.7)');
+  const colors=sorted.map(v=>v.venue_rating>=4.5?'rgba(26,122,46,0.65)':v.venue_rating>=4.0?'rgba(160,96,0,0.65)':'rgba(215,15,0,0.65)');
 
   const datasets=[
     {label:'Competitor Rating',data:vals,backgroundColor:colors,borderWidth:0,borderRadius:3},
   ];
   if(hAvg){
-    datasets.push({type:'line',label:"Hector's Avg",data:Array(sorted.length).fill(parseFloat(hAvg)),
+    datasets.push({type:'line',label:"Hector's Google Avg",data:Array(sorted.length).fill(parseFloat(hAvg)),
       borderColor:'var(--red)',borderWidth:2,borderDash:[6,3],pointRadius:0,tension:0,fill:false});
   }
 
@@ -580,10 +590,10 @@ function renderBar(venues, hAvg){
       responsive:true,maintainAspectRatio:false,
       scales:{
         y:{min:3,max:5.1,grid:{color:'#1C1C1C'},ticks:{font:{size:9},color:'#666'}},
-        x:{grid:{display:false},ticks:{font:{size:9},color:'#666',maxRotation:35}},
+        x:{grid:{display:false},ticks:{font:{size:9},color:'#888',maxRotation:35}},
       },
       plugins:{
-        legend:{labels:{usePointStyle:true,pointStyleWidth:8,padding:12,font:{size:11},color:'#A0A0A0'}},
+        legend:{labels:{usePointStyle:true,pointStyleWidth:8,padding:12,font:{size:11},color:'#444444'}},
         tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.raw+'★'}},
       },
     },
@@ -599,10 +609,10 @@ function renderSentiment(data){
     type:'doughnut',
     data:{labels:['Positive','Neutral','Negative'],datasets:[{
       data:[sc.Positive,sc.Neutral,sc.Negative],
-      backgroundColor:['#2ECC40','#444','#D70F00'],borderWidth:0,hoverOffset:4,
+      backgroundColor:['#1A7A2E','#CCCCCC','#D70F00'],borderWidth:0,hoverOffset:4,
     }]},
     options:{cutout:'62%',responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{position:'bottom',labels:{padding:14,usePointStyle:true,pointStyleWidth:8,font:{size:11},color:'#A0A0A0'}}}},
+      plugins:{legend:{position:'bottom',labels:{padding:14,usePointStyle:true,pointStyleWidth:8,font:{size:11},color:'#444444'}}}},
   });
 }
 
